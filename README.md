@@ -2,4 +2,6 @@
 
 Contents:
 
-- [Test document](testdoc.md)
+- [User guide](DCSUserGuide.md)
+- [Installation guide](DCSInstallationGuide.md)
+- [Web API description](DCSApiDescription.md)
