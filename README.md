@@ -1,6 +1,4 @@
-# test-document
-
-Current documentation test
+# DCS documentation
 
 Contents:
 
