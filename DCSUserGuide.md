@@ -246,7 +246,7 @@ Currently the expression can consist of the following:
 numerical constants, +, -, ., /, \*, (, ) and register variables and the ternary operator (see below). E.g.
 
 ```
-ELECT1+ELECT2)*1.5
+(ELECT1+ELECT2)*1.5 
 ```
 
 ```

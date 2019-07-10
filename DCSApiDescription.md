@@ -49,8 +49,7 @@ Set-Cookie: COHERENT-DCSV3 ...
 
 {
   "username": "user",
-  "role": "Operator",
-  "appVersion": "3.0.0"
+  "role": "Operator"
 }
 ```
 
