@@ -39,7 +39,7 @@ A sample template:
 <h1>Your new DCS account has been created</h1>
 <p>Your user name is: %USERNAME%</p>
 <p>Your password is: %PASSWORD%</p>
-<p>The account has been create with the role: %ROLE%
+<p>The account has been create with the role: %ROLE%</p>
 <p>Sign in at:  %SIGNINURL%</p>
 ```
 
