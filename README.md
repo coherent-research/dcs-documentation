@@ -4,6 +4,6 @@ Contents:
 
 - [User guide](DCSUserGuide.md)
 - [Installation guide](DCSInstallationGuide.md)
-- [Configuration notes](DcsConfigurationNodes.md)
+- [Configuration notes](DcsConfigurationNotes.md)
 - [Web API description](DCSApiDescription.md)
 
