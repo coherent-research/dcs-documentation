@@ -23,7 +23,6 @@ SSO settings for user changed by administrator - SSO enabled/enforced| SsoSettin
 
 > * These actions are not allowed for users with SSO enforced
 
-
 Variable | Description
 ---------|------------
 %USERNAME% | The DCS account user name
@@ -32,6 +31,18 @@ Variable | Description
 %ROLE% | The DCS account role, i.e. Administrator, Guest, Operator or Viewer.
 %EMAIL% | The user email associated with the DCS account
 %SSOIDENTITY% | The SSO identity associated with the DCS account
+
+A sample template:
+
+**UserCreatedTemplate.html.template**
+```
+<h1>Your new DCS account has been created</h1>
+<p>Your user name is: %USERNAME%</p>
+<p>Your password is: %PASSWORD%</p>
+<p>The account has been create with the role: %ROLE%
+<p>Sign in at:  %SIGNINURL%</p>
+```
+
 
 ## Single sign on configuration
 
