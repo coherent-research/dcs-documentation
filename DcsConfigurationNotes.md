@@ -16,7 +16,7 @@ DCS user created | UserCreatedTemplate.html.template | %USERNAME%, %PASSWORD%, %
 DCS user created with SSO | SsoUserCreatedTemplate.html.template | %SSOIDENTITY%, %USERNAME%, %PASSWORD%, %SIGNINURL%, %ROLE%, %EMAIL%
 DCS user created with SSO enforced | SsoEnforcedUserCreatedTemplate.html.template | %SSOIDENTITY%, %SIGNINURL%, %ROLE%, %EMAIL%
 User resets their password * | PasswordResetTemplate.html.template | %USERNAME%, %PASSWORD%, %SIGNINURL%, %EMAIL%
-DCS account resets by administrator | AccountResetTemplate.html.template | %USERNAME%, %PASSWORD%, %SIGNINURL%, %EMAIL%
+DCS account resets by administrator * | AccountResetTemplate.html.template | %USERNAME%, %PASSWORD%, %SIGNINURL%, %EMAIL%
 SSO settings for user changed by administrator - SSO disabled | SsoSettingsChangedOffTemplate.html.template | %USERNAME%, %PASSWORD%, %SIGNINURL%, %EMAIL%
 SSO settings for user changed by administrator - SSO enabled | SsoSettingsChangedOnTemplate.html.template | %SSOIDENTITY%, %USERNAME%, %PASSWORD%, %SIGNINURL%, %EMAIL%
 SSO settings for user changed by administrator - SSO enabled/enforced| SsoSettingsChangedEnforcedTemplate.html.template | %SSOIDENTITY%, %SIGNINURL%, %EMAIL%
