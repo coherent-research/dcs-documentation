@@ -1,4 +1,16 @@
 # DCS configuration notes
+
+## Password Criteria
+The following settings in the DCS Web App appSettings.json file under the `DcsSettings` key can be used to configure password requirements:
+
+Settings | Use | Default value
+---------|-----|--------------
+PasswordRequireDigit | Passwords must contain at least 1 number | false
+PasswordRequiredLength | The minimum length for passwords | 6
+PasswordRequireNonAlphanumeric | Passwords must contain at least 1 non-alphanumeric character i.e. symbols, punctuation etc. | false
+PasswordRequireUppercase | Passwords must contain at least 1 upper case letter | false
+PasswordRequireLowercase | Passwords must contain at least 1 upper case letter | false
+
 ## User notification email templates
 It is possible to override the default emails that are sent when user accounts are created etc.
 
@@ -21,7 +33,7 @@ SSO settings for user changed by administrator - SSO disabled | SsoSettingsChang
 SSO settings for user changed by administrator - SSO enabled | SsoSettingsChangedOnTemplate.html.template | %SSOIDENTITY%, %USERNAME%, %PASSWORD%, %SIGNINURL%, %EMAIL%
 SSO settings for user changed by administrator - SSO enabled/enforced| SsoSettingsChangedEnforcedTemplate.html.template | %SSOIDENTITY%, %SIGNINURL%, %EMAIL%
 
-> * These actions are not allowed for users with SSO enforced
+> \* These actions are not allowed for users with SSO enforced
 
 Variable | Description
 ---------|------------
@@ -43,11 +55,10 @@ A sample template:
 <p>Sign in at:  %SIGNINURL%</p>
 ```
 
-
 ## Single Sign On configuration
 
 By default, SSO is completely disabled in DCS. 
-The following settings in the DCS Web App appSettings.json file are use to configure SSO support:
+The following settings in the DCS Web App appSettings.json file under the `DcsSettings` key are use to configure SSO support:
 
 Settings | Use | Default value 
 ---------|-----|--------------
