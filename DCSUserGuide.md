@@ -943,7 +943,6 @@ A tariff is used to determine how to calculate the cost associated with a set of
 
 ## Adding a Tariff
 - Click the **Add new tariff** button at the top right hand of the tariff table which will display an empty tariff settings form.
-- Click on the **New** button. 
 - Enter the fields according to the table below.
 - Click **Save**. 
 
@@ -960,7 +959,8 @@ Field | Description
 ------|------------ 
 Name |  A short human readable name, e.g. Day or Night.
 Start time | The time of day (GMT) the band starts in the format HH:MM (in 24hr time).
-Cost per unit | The cost (in pounds and pence) per unit.        
+Unit cose | The cost (in pounds and pence) per unit.        
+Day of week | The days of the week the tariff is valid for. This can be used to have, e.g., different tariffs on the weekends as opposed to weekdays.
 
 > Note that the end time for a tariff time band is always considered the start of the next time band (in start time order). This means that no 2 tariff time bands can have the same start time. The cost per unit can be in fractions of pence, e.g. if a supplier charges 12.34 p/kWh this can be enterd as 0.1234. Tariff time band names do not need to be unique within a tariff. Repeated time bands will be aggregated when creating the billing data. This allows rates to be split during the day. 
 
@@ -999,7 +999,6 @@ provide some limitation such as the number of serial ports it can handle).
 
 ## Adding a Modem
 - Click the **Add new modem** button at the top right hand of the modem table which will display an empty modem settings form.
-- Click on the **New** button. 
 - Enter the fields according to the table below.
 - Click **Save**. 
 
@@ -1034,7 +1033,6 @@ When installed, DCS has a default Collection Schedule defined which will most li
 
 ## Adding a Collection Schedule
 - Click the **Add new collection schedule** button at the top right hand of the collection schedule table which will display an empty collection schedule settings form.
-- Click on the **New** button. 
 - Enter the fields according to the table below.
 - Click **Save**. 
 
@@ -1063,7 +1061,6 @@ All meter registers and virtual meters can have a unit specified. In DCS a unit 
 
 ## Adding a Unit
 - Click the **Add new unit** button at the top right hand of the unittable which will display an empty settings form. 
-- Click on the **New** button. 
 - Enter the unit name.
 - Click **Save**. 
        
@@ -1091,8 +1088,7 @@ Guest | Guests are essentially only allowed to view Metered Data. They can view 
 - Select **Admin > User admin** in the main navigation bar and then open the **User accounts** panel to display a table of all users.
 
 ## Adding a User
-- Click the **Add new collection schedule** button at the top right hand of the collection schedule table which will display an empty collection schedule settings form.
-- Click on the **New** button. 
+- Click the **Add new user** button at the top right hand of the user table which will display an empty user settings form.
 - Enter the fields according to the table below.
 - Click **Save**. 
 
@@ -1138,7 +1134,6 @@ A Meter Restriction Profile can be created which has the default access set to  
 
 ### Adding Meter Restriction Profiles
 - Click the **Add new meter restriction profile** button at the top right hand of the table which will display an empty settings form.
-- Click on the **New** button. 
 - Enter the fields according to the table below.
 - To add new meter group, meters and/or virtual meters to the profile click the **Add profile item** button and set the access as required.
 - Click **Save**. 
@@ -1175,7 +1170,6 @@ A IDC Restriction Profile can be created which has the default access set to  **
 
 ### Adding IDC Restriction Profiles
 - Click the **Add new IDC restriction profile** button at the top right hand of the table which will display an empty settings form.
-- Click on the **New** button. 
 - Enter the fields according to the table below.
 - To add new IDC group to the profile click the **Add profile item** button and set the access as required.
 - Click **Save**. 
