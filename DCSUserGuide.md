@@ -1077,12 +1077,12 @@ A tariff is used to determine how to calculate the cost associated with a set of
 
 **Tariff band definition**
 
-| Field       | Description                                                                                                                             |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Name        | A short human readable name, e.g. Day or Night.                                                                                         |
-| Start time  | The time of day (GMT) the band starts in the format HH:MM (in 24hr time).                                                               |
-| Unit cost   | The cost (in pounds and pence) per unit.                                                                                                |
-| Day of week | The days of the week the tariff is valid for. This can be used to have, e.g., different tariffs on the weekends as opposed to weekdays. |
+Field | Description
+------|------------ 
+Name |  A short human readable name, e.g. Day or Night.
+Start time | The time of day (GMT) the band starts in the format HH:MM (in 24hr time).
+Unit cost | The cost (in pounds and pence) per unit.
+Day of week | The days of the week the tariff is valid for. This can be used to have, e.g., different tariffs on the weekends as opposed to weekdays.
 
 > Note that the end time for a tariff time band is always considered the start of the next time band (in start time order). This means that no 2 tariff time bands can have the same start time. The cost per unit can be in fractions of pence, e.g. if a supplier charges 12.34 p/kWh this can be enterd as 0.1234. Tariff time band names do not need to be unique within a tariff. Repeated time bands will be aggregated when creating the billing data. This allows rates to be split during the day.
 
@@ -1260,21 +1260,19 @@ IDC restriction profile | An optional profile that can be applied to the user to
 
 ## Meter Restriction Profiles
 
-It is possible for users (except administrators) to be given a Meter Restriction Profile. This profiles specifies which subset of meter groups that the user may access. A Meter Restriction Profile can be applied to any number of users.
-
-A Meter Restriction Profile is a nested Granted/Denied list of Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
+A Meter Restiction Profile is a nested list of Blocked/Allowed Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
 
 ** Example 1: A set of users is only allowed to access meters in a given group **
 
-A Meter Restriction Profile can be created which has the default access set to **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that the users will only be able to access this group.
+A Meter Restriction Profile can be created which has the default access set to **Blocked** which means they can not access any groups by default. A meter group can then be added which has the access set to **Allowed**. This will mean that user will only be able to access this allowed group.
 
 ** Example 2: A set of users is allowed to access all meters except those in a given group **
 
-A Meter Restriction Profile can be created which has the default access set to **Granted** which means they can access any groups by default. A meter group can then be added which has the access set to **Denied**. This will mean that user will be able to access all groups except this group.
+A Meter Restriction Profile can be created which has the default access set to **Allowed** which means they can access any groups by default. A meter group can then be added which has the access set to **Blocked**. This will mean that user will be able to access all groups except this blocked group.
 
 ** Example 3: A set of users is only allowed to access meters in a given group, except a certain meter **
 
-A Meter Restriction Profile can be created which has the default access set to **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that the users will only be able to access this group. To restrict access to a certain meter this can be added with its access set to **Denied**.
+A Meter Restriction Profile can be created which has the default access set to **Blocked** which means they can not access any groups by default. A meter group can then be added which has the access set to **Allowed**. This will mean that user will only be able to access this allowed group. To restrict access to a certain meter this can be added with its access set to **Blocked**.
 
 ### Viewing Meter Restriction Profiles
 
@@ -1287,11 +1285,11 @@ A Meter Restriction Profile can be created which has the default access set to *
 - To add new meter group, meters and/or virtual meters to the profile click the **Add profile item** button and set the access as required.
 - Click **Save**.
 
-| Field          | Description                                                                                                                                                                                                  |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Name           | A string for the user to refer to the profile. It does not have any significance to the system.                                                                                                              |
-| Default access | Specifies whether the default profile access is **Granted** (i.e. by default a user with this profile can access everything) or **Denied** (i.e. by default a user with this profile cannot access anything) |
-| User default   | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.                                         |
+Field | Description
+------|------------ 
+Name |  A string for the user to refer to the profile. It does not have any significance to the system.
+Default access | Specifies whether the default profile access is **Allowed** (i.e. by default a user with this profile can access everything) or **Blocked** (i.e. by default a user with this profile cannot access anything)
+User default | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.
 
 ### Modifying Meter Restriction Profiles
 
@@ -1305,17 +1303,15 @@ A Meter Restriction Profile can be created which has the default access set to *
 
 ## IDC Restriction Profiles
 
-It is possible for users (except administrators) to be given a IDC Restriction Profile. This profiles specifies which subset of IDC groups that the user may access. A IDC Restriction Profile can be applied to any number of users.
-
-An IDC Restriction Profile is a nested Granted/Denied list of IDC Groups. A few examples best illustrates the use of a restriction profiles.
+A IDC Restiction Profile is a nested list of Blocked/Allowed IDC Groups. A few examples best illustrates the use of a restriction profiles.
 
 ** Example 1: A set of users is only allowed to access IDCs in a given group **
 
-A IDC Restriction Profile can be created which has the default access set to **Denied** which means they can not access any groups by default. A IDC group can then be added which has the access set to **Granted**. This will mean the user will only be able to access this group.
+A IDC Restriction Profile can be created which has the default access set to  **Blocked** which means they can not access any groups by default. A IDC group can then be added which has the access set to **Allowed**. This will mean that user will only be able to access this allowed group.
 
 ** Example 2: A set of users is allowed to access all IDCs except those in a given group **
 
-A IDC Restriction Profile can be created which has the default access set to **Granted** which means they can access any groups by default. A IDC group can then be added which has the access set to **Denied**. This will mean the users will be able to access all groups except this group.
+A IDC Restriction Profile can be created which has the default access set to  **Allowed** which means they can access any groups by default. A IDC group can then be added which has the access set to **Blocked**. This will mean that user will be able to access all groups except this blocked group.
 
 ### Viewing IDC Restriction Profiles
 
@@ -1328,11 +1324,11 @@ A IDC Restriction Profile can be created which has the default access set to **G
 - To add new IDC group to the profile click the **Add profile item** button and set the access as required.
 - Click **Save**.
 
-| Field          | Description                                                                                                                                                                                                  |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Name           | A string for the user to refer to the profile. It does not have any significance to the system.                                                                                                              |
-| Default access | Specifies whether the default profile access is **Granted** (i.e. by default a user with this profile can access everything) or **Denied** (i.e. by default a user with this profile cannot access anything) |
-| User default   | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.                                         |
+Field | Description
+------|------------ 
+Name |  A string for the user to refer to the profile. It does not have any significance to the system.
+Default access | Specifies whether the default profile access is **Allowed** (i.e. by default a user with this profile can access everything) or **Blocked** (i.e. by default a user with this profile cannot access anything)
+User default | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.
 
 ### Modifying IDC Restriction Profiles
 
