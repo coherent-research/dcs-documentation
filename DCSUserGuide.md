@@ -1115,19 +1115,19 @@ IDC restriction profile | An optional profile that can be applied to the user to
 ## Meter Restricted Profiles
 It is possible for users (except administrators) to be given a Meter Restriction Profile. This profiles specifies which subset of meter groups that the user may access. A Meter Restriction Profile can be applied to any number of users. 
 
-A Meter Restiction Profile is a nested Black/White list of Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
+A Meter Restiction Profile is a nested Granted/Denied list of Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
 
 ** Example 1: A set of users is only allowed to access meters in a given group **
 
-A Meter Restriction Profile can be created which has the default access set to  **Black listed** which means they can not access any groups by default. A meter group can then be added which has the access set to **White listed**. This will mean that user will only be able to access this white listed group.
+A Meter Restriction Profile can be created which has the default access set to  **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that the users will only be able to access this group.
 
 ** Example 2: A set of users is allowed to access all meters except those in a given group **
 
-A Meter Restriction Profile can be created which has the default access set to  **White listed** which means they can access any groups by default. A meter group can then be added which has the access set to **Black listed**. This will mean that user will be able to access all groups except this white listed group.
+A Meter Restriction Profile can be created which has the default access set to  **Granted** which means they can access any groups by default. A meter group can then be added which has the access set to **Denied**. This will mean that user will be able to access all groups except this group.
 
 ** Example 3: A set of uers is only allowed to access meters in a given group, except a certain meter **
 
-A Meter Restriction Profile can be created which has the default access set to  **Black listed** which means they can not access any groups by default. A meter group can then be added which has the access set to **White listed**. This will mean that user will only be able to access this white listed group. To restrict access to a certain meter this can be added with its access set to **Black listed**.
+A Meter Restriction Profile can be created which has the default access set to  **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that the users will only be able to access this group. To restrict access to a certain meter this can be added with its access set to **Denied**.
 
 ### Viewing Meter Restriction Profiles
 - Select **Admin > User admin** in the main navigation bar and then open the **Meter restriction profiles** panel to display a table of all profiles.
@@ -1141,7 +1141,7 @@ A Meter Restriction Profile can be created which has the default access set to  
 Field | Description
 ------|------------ 
 Name |  A string for the user to refer to the profile. It does not have any significance to the system.
-Default access | Specifies whether the default profile access is **White listed** (i.e. by default a user with this profile can access everything) or **Black listed** (i.e. by default a user with this profile cannot access anything)
+Default access | Specifies whether the default profile access is **Granted** (i.e. by default a user with this profile can access everything) or **Denied** (i.e. by default a user with this profile cannot access anything)
 User default | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.
 
 ### Modifying Meter Restriction Profiles
@@ -1155,15 +1155,15 @@ User default | If selected new users (except Administrators) will be given this 
 ## IDC Restricted Profiles
 It is possible for users (except administrators) to be given a IDC Restriction Profile. This profiles specifies which subset of IDC groups that the user may access. A IDC Restriction Profile can be applied to any number of users. 
 
-A IDC Restiction Profile is a nested Black/White list of IDC Groups. A few examples best illustrates the use of a restriction profiles.
+A IDC Restiction Profile is a nested Granted/Denied list of IDC Groups. A few examples best illustrates the use of a restriction profiles.
 
 ** Example 1: A set of users is only allowed to access IDCs in a given group **
 
-A IDC Restriction Profile can be created which has the default access set to  **Black listed** which means they can not access any groups by default. A IDC group can then be added which has the access set to **White listed**. This will mean that user will only be able to access this white listed group.
+A IDC Restriction Profile can be created which has the default access set to  **Denied** which means they can not access any groups by default. A IDC group can then be added which has the access set to **Granted**. This will mean the userw will only be able to access this group.
 
 ** Example 2: A set of users is allowed to access all IDCs except those in a given group **
 
-A IDC Restriction Profile can be created which has the default access set to  **White listed** which means they can access any groups by default. A IDC group can then be added which has the access set to **Black listed**. This will mean that user will be able to access all groups except this white listed group.
+A IDC Restriction Profile can be created which has the default access set to  **Granted** which means they can access any groups by default. A IDC group can then be added which has the access set to **Denied**. This will mean the users will be able to access all groups except this group.
 
 ### Viewing IDC Restriction Profiles
 - Select **Admin > User admin** in the main navigation bar and then open the **IDC restriction profiles** panel to display a table of all profiles.
@@ -1177,7 +1177,7 @@ A IDC Restriction Profile can be created which has the default access set to  **
 Field | Description
 ------|------------ 
 Name |  A string for the user to refer to the profile. It does not have any significance to the system.
-Default access | Specifies whether the default profile access is **White listed** (i.e. by default a user with this profile can access everything) or **Black listed** (i.e. by default a user with this profile cannot access anything)
+Default access | Specifies whether the default profile access is **Granted** (i.e. by default a user with this profile can access everything) or **Denied** (i.e. by default a user with this profile cannot access anything)
 User default | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.
 
 ### Modifying IDC Restriction Profiles
