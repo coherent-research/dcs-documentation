@@ -59,9 +59,9 @@ It is possible to partition meters logically into a hierarchy of Groups. The hie
 
 There is no limit in DCS as to the number of groups or the nesting within groups and no prescribed way of deciding how to partition meters for a particular installation. Assigning a meter to a group is done when the Meter is added.
 
-All operations for meters and virtual meters are accessed via the **Meters** page which can be selectedf from the main navigation bar.
+All operations for meters and virtual meters are accessed via the **Meters** page which can be selected from the main navigation bar.
 
-The **Meters** page is generally divided into 2 parts: a group panel on the left and the main part on the right. The group panel contains the meter groups in a tree structure. All group actions are peformed in the group panel. The group panel can be hidden by clicking on the **Hide groups** button to provide the user with more room for the main part of the page.
+The **Meters** page is generally divided into 2 parts: a group panel on the left and the main part on the right. The group panel contains the meter groups in a tree structure. All group actions are performed in the group panel. The group panel can be hidden by clicking on the **Hide groups** button to provide the user with more room for the main part of the page.
 
 Alternatively, the user can click on the **Show flat list** button to display all meters and virtual meters in a flat list and use the filter bar to narrow the list down to the required meters and virtual meters. Clicking the **Show groups** button will display the group panel.
 
@@ -76,8 +76,8 @@ Alternatively, the user can click on the **Show flat list** button to display al
 Field | Description
 ------|------------
 Name  | A human readable name for the Group. This can be any name whatsoever depending on how the user wants to partition the meters (i.e. by use, type, location etc).
-Url   | An optional absolute URL can be added if a link to extra information is required. This link will be presented when the user is viewing a group and when clicked will open in a new browser tab. This can be used for any purpose.
-Link text | The text that will be displayed of the Url is used.
+URL   | An optional absolute URL can be added if a link to extra information is required. This link will be presented when the user is viewing a group and when clicked will open in a new browser tab. This can be used for any purpose.
+Link text | The text that will be displayed of the URL is used.
 
 ### Modifying a Group
 - Each group in the group panel has a action menu to the right of the group name that contains an option to **Group settings**.
@@ -133,12 +133,12 @@ Extra fields may be present that are specific to the plugin used by the Meter Ty
 
 For a **Modem** the Remote Address takes the form a telephone  number.
 
-For a **TCP/IP** connection the Remote Address takes the form of *IPAdress*:*PortNo*, e.g. *127.0.0.1:4000.*
+For a **TCP/IP** connection the Remote Address takes the form of *IPAddress*:*PortNo*, e.g. *127.0.0.1:4000.*
                
 For an **IDC** the Remote Address takes forms of the MAC address (e.g. 00:17:BF:00:00:01) followed by an indicator as follows:
 
 - Pulse (IDC v3) Inputs: 00:17:BF:00:00:01-Pn where n is the number of the pulse input (0-31).
-- Pulse (IDC v4 or greater) Inputs: 00:17:BF:00:00:01-Pm.n where m is the modbus address of the pulse counter, and where n is the number of the pulse input (0-7).
+- Pulse (IDC v4 or greater) Inputs: 00:17:BF:00:00:01-Pm.n where m is the Modbus address of the pulse counter, and where n is the number of the pulse input (0-7).
 - Radio Inputs: 00:17:BF:00:00:01-Rn where n is the serial number of the radio transmitter (WITHOUT leading zeros).
 - RS-485 connected meters: 00:17:BF:00:00:01-COMA
 - RS-232 connected meters: 00:17:BF:00:00:01-COMB
@@ -236,7 +236,7 @@ CONDITION ? VALUE_IF_TRUE : VALUE_IF_FALSE
 where CONDITION must be a logical comparison such as ELECT == 0 or ELECT >= 1 
 and VALUE_IF_TRUE and VALUE_IF_FALSE are numeric values.
 
-The comparision operators are: == (equals), &gt; (greater than), &gt;= (greater than or equal to), &lt; (less than), &lt;= (less than or equal to).
+The comparison operators are: == (equals), &gt; (greater than), &gt;= (greater than or equal to), &lt; (less than), &lt;= (less than or equal to).
 Logical operators can also be used in a CONDITION. The logical operators are &amp;&amp; (and) and || (or).
 
 Examples:
@@ -299,7 +299,7 @@ The data currently being displayed can always be refreshed from the server by cl
 # Accessing Billing Data
 ## Overview     
 Each Register and Virtual Meter in DCS may optionally have a Tariff associated with it (see
-[Managing Tariffs](#managing-tariffs) for how to manage tariffs in DCS). The tariff is used by DCS to calculate the cost associated with a Register or Virtual Meter for a given period of time based on the Metered Data. Note that Registers and Virtual Meters that correspond to Instataneous values may NOT have Tariffs associated with them.
+[Managing Tariffs](#managing-tariffs) for how to manage tariffs in DCS). The tariff is used by DCS to calculate the cost associated with a Register or Virtual Meter for a given period of time based on the Metered Data. Note that Registers and Virtual Meters that correspond to Instantaneous values may NOT have Tariffs associated with them.
  ## Viewing Billing Data       
 To view the Billing Data for a Register or Virtual Meter:
 
@@ -381,7 +381,7 @@ Readings period | The reading period used when presenting any Metered Data in th
                          
 ** Report Frequency **
 
-- Houly: the report will cover one hour.                       
+- Hourly: the report will cover one hour.                       
 - Daily: the report will cover one day.                       
 - Weekly: the report will cover one week from Monday to Sunday.                       
 - Monthly: the report will cover one month from the 1st of the month.                       
@@ -431,14 +431,14 @@ Only send on alarm condition | Some types of reports have the concept of an alar
 - Delete a report by using the action menu on the right of the report row and clicking **Delete virtual meter**. 
         
 ## Managing Report Groups
-Public Reports (but not Private Reports) can be grouped in a similar way to Meters and Virtual Meters. The report group panel can contain any number of groups and while they behave in an identical way to groups in the meter group panel the structure of the groups is completeley independant.     
+Public Reports (but not Private Reports) can be grouped in a similar way to Meters and Virtual Meters. The report group panel can contain any number of groups and while they behave in an identical way to groups in the meter group panel the structure of the groups is completely independent.     
 
 #  Calibration Readings
 ## General
 It is possible to add Calibration Readings to the system which are used to calibrate the meter readings for a particular register.
 A calibration reading is usually derived by manually reading the display of the physical meter and recording the value and time.
 When this calibration reading is entered into DCS it is used to calculate an offset between the value entered and the reading in the database at the corresponding time (linearly interpolated between half hour values).
-The offset is then applied to all readings when diplayed or downloaded. This is particularly useful for pulse inputs or radio pulses as it allows all readings to be offset at the time of the calibration reading so the DCS values can correspond to a physical meter's display.
+The offset is then applied to all readings when displayed or downloaded. This is particularly useful for pulse inputs or radio pulses as it allows all readings to be offset at the time of the calibration reading so the DCS values can correspond to a physical meter's display.
 It is also possible to view/download the readings from DCS uncalibrated (i.e. without the offset applied).
 
 ## View Calibration Readings
@@ -473,7 +473,7 @@ to a new value that doesn't reflect the true consumption.
 To handle these cases in DCS it is possible to create a *Register Reset* for a register that will
 allow DCS to handle the discontinuity in the readings.
 
-A register reset is specified for a particular register and is assumed to have occured at the start of a particular metering period.
+A register reset is specified for a particular register and is assumed to have occurred at the start of a particular metering period.
 When entering the Register Reset the operator can provide an estimated value of the total
 value at the start of the period (i.e. a final start of period total value before the reset) and a period value for the period.
                
@@ -481,9 +481,9 @@ There are two normal cases where register resets are used:
 
 **The "rollover" case:** the register simply reached a maximum value during a period and rolled over to zero
                 
-A register reset in this case will be created with a timestamp equal to the start of the period where the rollover occured
+A register reset in this case will be created with a timestamp equal to the start of the period where the rollover occurred
 (i.e. the period which had a high total value immediately before a period that had a very low total value).
-The total value should correspond to the the value in the reading since this will be correct (since it occured before the actual counter rolled over) so the operator can simply tick the *Use total from reading* box.
+The total value should correspond to the the value in the reading since this will be correct (since it occurred before the actual counter rolled over) so the operator can simply tick the *Use total from reading* box.
 The period value must be an estimation of the consumption for that period. It is up to the operator to estimate this value since it can not be precisely.
                                
 *Example*
@@ -500,7 +500,7 @@ Period value | Total at start | Period start
 10 | 15 | 01/01/2015 11:00
                
 In this case the consumption for the period starting at 10:00 is calculated as a negative value by DCS so a Register Reset is required.
-A register reset should be created with a timestamp of 01/01/2015 10:00 since this is the start of the period where the reset occured.
+A register reset should be created with a timestamp of 01/01/2015 10:00 since this is the start of the period where the reset occurred.
 The total value should be the same as that real reading so *Use total from reading* should be ticked.
 The period value should be estimated to 10 (since the consumption before and after the period is 10 this seems a reasonable estimation).
                 
@@ -530,7 +530,7 @@ Period value | Total at start | Period start
 10 | 13 | 01/01/2015 14:30
                 
 A register reset should be created with a timestamp of 01/01/2015 14:00 since this is the start of the period where the new meter is metering and therefore is
-considered to be the point at which the reset occured.
+considered to be the point at which the reset occurred.
 The total value should be an estimation of the total at the start of this period based on the old register and so should be set to, e.g.,
 70 (since the last known value of the old register was 20010 at 10:30 and the consumption
 is averaging 10 per period then this seems a reasonable estimation).
@@ -555,9 +555,9 @@ To manage Register resets:
 Field | Description
 ------|------------ 
 Timestamp | The time at the start of the metering period that the reset occurred.. This will be in the form dd/MM/yyyy HH:mm. Note that if a time is entered that does not correspond to the start of a metering period it will be "rounded" down to the nearest valid time.
-Period value | The estimated period value (i.e. consumption) of the register for the metering period when the reset occured. This must be a numerical value.
-Total Value | The estimated total value of the register immediately before the reset occured. . This must be a numerical value.
-Use Reading Value | If set the Total Value above will be ignored and the total value from the metered data will be used instead. This would be the case where the metered data contains a correct total value at the start of the metering period.The estimated total value of the register immediately before the reset occured. This must be a numerical value.
+Period value | The estimated period value (i.e. consumption) of the register for the metering period when the reset occurred. This must be a numerical value.
+Total Value | The estimated total value of the register immediately before the reset occurred. . This must be a numerical value.
+Use Reading Value | If set the Total Value above will be ignored and the total value from the metered data will be used instead. This would be the case where the metered data contains a correct total value at the start of the metering period.The estimated total value of the register immediately before the reset occurred. This must be a numerical value.
 Notes | Used for user information only.
         
 ## Modifying Register Resets
@@ -741,9 +741,9 @@ Proxy | Determines if a HTTP proxy server should be used for connections to DCS.
 Proxy server address | The IP address for the proxy server (only valid if Proxy  is Yes).
 Proxy server port | The listening  port for the proxy server (only valid if Proxy  is Yes).        
 Modbus serial settings | The serial port settings for the external Modbus port when communicating with Modbus devices in the form "b, dps" where b is the baud rate, d is the number of databits (7, 8), p is the parity (O, E, N) and s is the number of stop bits (1, 2). E.g. 1200, 7E1.
-Delay1 | Time delay (in ms) inserted between receiving a modbus message from a modbus address and sending to the same address. 0-10000, default 0.
-Delay2 | Time delay (in ms) inserted between receiving a modbus message from a modbus address and sending to another address. 0-10000, default 0.
-Delay3 | An extra duration, in milliseconds, added to the timeout used by the IDC when polling modbus meters. Normally this value can be zero as the IDC will use an appropriate timeout. However, for some meters that are slow to process Modbus requests an extra duration can be added. 0-10000, default 0.
+Delay1 | Time delay (in ms) inserted between receiving a Modbus message from a Modbus address and sending to the same address. 0-10000, default 0.
+Delay2 | Time delay (in ms) inserted between receiving a Modbus message from a Modbus address and sending to another address. 0-10000, default 0.
+Delay3 | An extra duration, in milliseconds, added to the timeout used by the IDC when polling Modbus meters. Normally this value can be zero as the IDC will use an appropriate timeout. However, for some meters that are slow to process Modbus requests an extra duration can be added. 0-10000, default 0.
 Modbus retries | The number of times the IDC will retry to read a Modbus meter. 0-10, default 0.
 Modbus/TCP port | If specified the IDC will act as a Modbus over TCP/IP gateway. Default 0. If zero the feature is disabled. The normal value when the feature is used in 502.
 Trace On | Turn on/off UDP tracing for the IDC.
@@ -760,15 +760,15 @@ It is possible to issue a command to an individual IDC to reset itself. This is 
 - An IDC can be reset by using the action menu on the right of the IDC row and clicking **Reset device**. 
 
 ## Managing IDC Groups
-IDCs can be grouped in a similar way to Meters and Virtual Meters. The report group panel can contain any number of groups and while they behave in an identical way to groups in the meter group panel the structure of the groups is completeley independant.   
+IDCs can be grouped in a similar way to Meters and Virtual Meters. The report group panel can contain any number of groups and while they behave in an identical way to groups in the meter group panel the structure of the groups is completely independent.   
    
 IDC Groups have a field *Default* which can optionally be set on one Group. If this is set all new IDCs will automatically be allocated to this group when they first connect to DCS.
 
 ## Managing Modbus Devices
 ### Overview
-Modbus devices fall into 2 categories: managed modbus devices and unmanaged modbus devices. Managed modbus devices are devices produced by Coherent Research which can be
-fully managed via DCS. These devices include Coherent Research Pulse Counters and Coherent Research Radio Receivers. All other modbus devices are considered unmanaged devices.
-It is not possible to add, delete, edit or setup unmanaged modbus devices (these devices are created/deleted automatically when a meter is defined that references them) but the status of these devices is
+Modbus devices fall into 2 categories: managed Modbus devices and unmanaged Modbus devices. Managed Modbus devices are devices produced by Coherent Research which can be
+fully managed via DCS. These devices include Coherent Research Pulse Counters and Coherent Research Radio Receivers. All other Modbus devices are considered unmanaged devices.
+It is not possible to add, delete, edit or setup unmanaged Modbus devices (these devices are created/deleted automatically when a meter is defined that references them) but the status of these devices is
 check and it is possible to test that the communications to the device is working.
 
 ### View the Modbus Devices 
@@ -783,26 +783,26 @@ check and it is possible to test that the communications to the device is workin
 Field | Description
 ------|------------         
 Description | A string for the user to describe the Modbus Device. It does not have any significance to the system.
-Type | The type of managed modbus device. This can be either Pulse Counter or Radio Receiver.
-Address | The modbus address of the device.
-Serial number | The serial number of the managed modbus device. This is in the form of 8 alphanumeric characters.
+Type | The type of managed Modbus device. This can be either Pulse Counter or Radio Receiver.
+Address | The Modbus address of the device.
+Serial number | The serial number of the managed Modbus device. This is in the form of 8 alphanumeric characters.
 
 ### Editing a Modbus Device
 - Click the Modbus device row to select it. This will display the Modbus device settings form.
 - Modify any details entered previously and click the **Save** button.
 
 ### Testing a Modbus Device
-DCS will show the status of the modbus device the last time the IDC tried to communicate with it. When commissioning modbus devices it is often useful to
+DCS will show the status of the Modbus device the last time the IDC tried to communicate with it. When commissioning Modbus devices it is often useful to
 check the connection immediately. DCS provides the ability to send a message to any modbus device (managed or non-managed) to ensure that it is responding.
 
 - Select the IDC and open the **Modbus devices** tab to show the table of Modbus devices. 
-- Test the deviceby using the action menu on the right of the Modbus device row and clicking **Test comms**. 
+- Test the device by using the action menu on the right of the Modbus device row and clicking **Test comms**. 
 
             
 ### Setting up a Modbus Device
-When a managed modbus device is first connected to the system its modbus address and serial settings can be
+When a managed modbus device is first connected to the system its Modbus address and serial settings can be
 automatically set from DCS. This can be done without knowing the current address or serial settings of the device but it does require that the serial number is known.
-DCS will set the device to the address specified when the modbus devices was added to DCS and the serial settings to those defined for the modbus in the IDC.
+DCS will set the device to the address specified when the Modbus devices was added to DCS and the serial settings to those defined for the Modbus in the IDC.
 
 - Select the IDC and open the **Modbus devices** tab to show the table of Modbus devices. 
 - Test the device by using the action menu on the right of the Modbus device row and clicking **Setup device**.
@@ -843,7 +843,7 @@ or if it has not been possible to interrogate a meter automatically for some tim
 
 - Select the meter and open the **Interrogation** tab.
 - Select **Data collection** from the list and pick the date range you wish to interrogate the meter over and click the **Start** button.
-- Dcs now fetches the data from the meter within the specified date range and overwrites this to the database.
+- DCS now fetches the data from the meter within the specified date range and overwrites this to the database.
 - While the interrogation is occurring, the main panel displays the trace of information exchanged between DCS and the meter.
 - The interrogation will complete automatically when all the data is read. Alternatively the session can be terminated at any time by clicking the **Cancel** button.
         
@@ -886,14 +886,14 @@ It is possible to initialise a queued interrogation on a meter basis or for a wh
 ## Queuing an interrogation for all meters in a group
 - Select **Meters** in the main navigation bar and then select a group in the group panel.
 - Order a queued data collection communication test interrogation for all meters in the group by using the action menu on the right of the group name and clicking **Queue data collection** or a **Queue communication test** respectively.
-## Viewing interrogation resulrs
+## Viewing interrogation results
 When one or more interrogations are queued they will be added to the list and DCS will perform the interrogation in the background. To track the progress of queued interrogations and view results go to the Meters home page:
 
 - Select Meters in the main navigation bar and click **Meters home** and open the **Queued Interrogation** panel.
 - The user can 
 click the **Refresh** button to update the current status.
 
-> Completed interrogations will be automatically removed from the list after a predefined time. The time after which completed interrogations are automatically removed from the list can be configured in the DCServce.exe.config appSettings with setting **MaxAgeOfCompletedQueuedInterrogations_m** and is specified in minutes (default value 24*60).
+> Completed interrogations will be automatically removed from the list after a predefined time. The time after which completed interrogations are automatically removed from the list can be configured in the DCSService.exe.config appSettings with setting **MaxAgeOfCompletedQueuedInterrogations_m** and is specified in minutes (default value 24*60).
 
 ## Application settings
 A number of application settings can be used to modify the behaviour of the Queued Interrogation function in the DCService.exe.config file:
@@ -957,9 +957,9 @@ Daily tariff bands | Each tariff must have one or more time bands during the day
 
 Field | Description
 ------|------------ 
-Name |  A short human readable name, e.g. Day or Night.
+Name | A short human readable name, e.g. Day or Night.
 Start time | The time of day (GMT) the band starts in the format HH:MM (in 24hr time).
-Unit cose | The cost (in pounds and pence) per unit.        
+Unit cost | The cost (in pounds and pence) per unit.        
 Day of week | The days of the week the tariff is valid for. This can be used to have, e.g., different tariffs on the weekends as opposed to weekdays.
 
 > Note that the end time for a tariff time band is always considered the start of the next time band (in start time order). This means that no 2 tariff time bands can have the same start time. The cost per unit can be in fractions of pence, e.g. if a supplier charges 12.34 p/kWh this can be enterd as 0.1234. Tariff time band names do not need to be unique within a tariff. Repeated time bands will be aggregated when creating the billing data. This allows rates to be split during the day. 
@@ -983,7 +983,7 @@ When the total cost is calculated it will be presented as 2 bands Night and Day.
 
 # Managing Modems
 ## Overview
-     It is possible to use *Modems* to connect
+It is possible to use *Modems* to connect
 to certain types of meters. When a meter is defined with a Connection
 Method of Modem, then DCS will scan all defined modems and use the first
 available one (providing the Remote Address Filter allows the meter's
@@ -1029,7 +1029,7 @@ A schedule defines a window of time that a meter can be called and the number of
 When installed, DCS has a default Collection Schedule defined which will most likely be suitable for most installations.
 
 ## Viewing Collection Schedules
-- Select **Admin > Metering settings** in the main navigation bar and then open the **Collectiion schedules** panel to display a table of all modems.
+- Select **Admin > Metering settings** in the main navigation bar and then open the **Collection schedules** panel to display a table of all modems.
 
 ## Adding a Collection Schedule
 - Click the **Add new collection schedule** button at the top right hand of the collection schedule table which will display an empty collection schedule settings form.
@@ -1060,7 +1060,7 @@ All meter registers and virtual meters can have a unit specified. In DCS a unit 
 - Select **Admin > Metering settings** in the main navigation bar and then open the **Units** panel to display a table of all units.
 
 ## Adding a Unit
-- Click the **Add new unit** button at the top right hand of the unittable which will display an empty settings form. 
+- Click the **Add new unit** button at the top right hand of the unit table which will display an empty settings form. 
 - Enter the unit name.
 - Click **Save**. 
        
@@ -1079,10 +1079,10 @@ A user has an associated role: guest, viewer, operator or administrator.
 
 Role | Capabilities | Usage
 -----|--------------|------
-Administrator | Adminstrator are permitted to perform all tasks in DCS | Limit the number of Administrators to a small number of trusted, capable users.
+Administrator | Administrator are permitted to perform all tasks in DCS | Limit the number of Administrators to a small number of trusted, capable users.
 Operators | An operator can create, edit and delete meters, virtual meters or groups and manage IDCs unless they are restricted to certain groups by an administrator (see[User Restricted Groups](#user-restricted-groups)). An operator may view Meter Types but not create, delete or modify them. They may not view the **Admins** page. They may also view and create their own reports and view all public reports. | This role is designed for users who will use all aspects of the system be may be restricted to certain groups of meters or IDCs.
-Viewer | The viewer may view virtually all parts of the system but they have stricly read only access. Viewers can not create, edit and delete meters, virtual meters or groups. Viewers can be restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). Viewer may view but not edit Meter Types, IDCs and Administration functions with the exception of the Users table. They may also view and create their own reports and view all public reports. | This role is usually just used for demonstation purposes.
-Guest | Guests are essentially only allowed to view Metered Data. They can view any of the groups, meters (meter passwords and remote addresses will be hidden) or virtual meters unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)); however they may not create, modify or delete any of them. They may not interrogate meters or import any data. They can not interact with IDCs, view the event log or access any administrative funtions. They may view and create their own reports and view all public reports. | Use this role if the user needs to be restricted to a subset of meters and should only be authorised to view Metered Data  
+Viewer | The viewer may view virtually all parts of the system but they have strictly read only access. Viewers can not create, edit and delete meters, virtual meters or groups. Viewers can be restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). Viewer may view but not edit Meter Types, IDCs and Administration functions with the exception of the Users table. They may also view and create their own reports and view all public reports. | This role is usually just used for demonstration purposes.
+Guest | Guests are essentially only allowed to view Metered Data. They can view any of the groups, meters (meter passwords and remote addresses will be hidden) or virtual meters unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)); however they may not create, modify or delete any of them. They may not interrogate meters or import any data. They can not interact with IDCs, view the event log or access any administrative functions. They may view and create their own reports and view all public reports. | Use this role if the user needs to be restricted to a subset of meters and should only be authorised to view Metered Data  
 
 ## Viewing users
 - Select **Admin > User admin** in the main navigation bar and then open the **User accounts** panel to display a table of all users.
@@ -1115,7 +1115,7 @@ IDC restriction profile | An optional profile that can be applied to the user to
 ## Meter Restricted Profiles
 It is possible for users (except administrators) to be given a Meter Restriction Profile. This profiles specifies which subset of meter groups that the user may access. A Meter Restriction Profile can be applied to any number of users. 
 
-A Meter Restiction Profile is a nested Granted/Denied list of Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
+A Meter Restriction Profile is a nested Granted/Denied list of Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
 
 ** Example 1: A set of users is only allowed to access meters in a given group **
 
@@ -1125,7 +1125,7 @@ A Meter Restriction Profile can be created which has the default access set to  
 
 A Meter Restriction Profile can be created which has the default access set to  **Granted** which means they can access any groups by default. A meter group can then be added which has the access set to **Denied**. This will mean that user will be able to access all groups except this group.
 
-** Example 3: A set of uers is only allowed to access meters in a given group, except a certain meter **
+** Example 3: A set of users is only allowed to access meters in a given group, except a certain meter **
 
 A Meter Restriction Profile can be created which has the default access set to  **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that the users will only be able to access this group. To restrict access to a certain meter this can be added with its access set to **Denied**.
 
@@ -1155,11 +1155,11 @@ User default | If selected new users (except Administrators) will be given this 
 ## IDC Restricted Profiles
 It is possible for users (except administrators) to be given a IDC Restriction Profile. This profiles specifies which subset of IDC groups that the user may access. A IDC Restriction Profile can be applied to any number of users. 
 
-A IDC Restiction Profile is a nested Granted/Denied list of IDC Groups. A few examples best illustrates the use of a restriction profiles.
+An IDC Restriction Profile is a nested Granted/Denied list of IDC Groups. A few examples best illustrates the use of a restriction profiles.
 
 ** Example 1: A set of users is only allowed to access IDCs in a given group **
 
-A IDC Restriction Profile can be created which has the default access set to  **Denied** which means they can not access any groups by default. A IDC group can then be added which has the access set to **Granted**. This will mean the userw will only be able to access this group.
+A IDC Restriction Profile can be created which has the default access set to  **Denied** which means they can not access any groups by default. A IDC group can then be added which has the access set to **Granted**. This will mean the user will only be able to access this group.
 
 ** Example 2: A set of users is allowed to access all IDCs except those in a given group **
 
@@ -1189,14 +1189,14 @@ User default | If selected new users (except Administrators) will be given this 
 - Delete a IDC Restriction Profiles by using the action menu on the right of the table row and clicking **Delete profile**.      
 
 # Miscellaneous DCS settings
-A number of other server specific settings can be modified by administors.
+A number of other server specific settings can be modified by administrators.
 
 ## Alarm Handling
 DCS may be configured to send alarms via email to a defined list of email addresses. To edit the list of email addresses:
 
 - Select **Admin > Server admin** in the main navigation bar and then open the **Alarm handling** panel.
 - Modify the recipients list. The list must consist of a comma separated list of valid email addresses.
-- Specify if the alarms should be sent in a consensed aggregated list, or a flat list. 
+- Specify if the alarms should be sent in a condensed aggregated list, or a flat list. 
 - Click the **Save** button. 
         
 ## IDC Updates
@@ -1313,7 +1313,7 @@ defined in the Meter Type corresponds to the values used to specify the channels
         
 Register | Address
 ---------|--------
-Active Energy Import (kWh)| 19 (corresponds to hex 13)
+Active Energy Import (kWh) | 19 (corresponds to hex 13)
 Active Energy Export (kWh) | 35 (corresponds to hex 23)
 Reactive Energy Import (kvarh) | 23 (corresponds to hex 17)
 Reactive Energy Export (kvarh) | 39 (corresponds to hex 27)
@@ -1506,7 +1506,7 @@ settings:
 
 Name |  Description | Values
 -----|--------------|-------    
-GDCount | The number of times a Global Disable message is sent out on a multidrop connection (a connection is assumed to be multidrop if a Device Id is defined for the meter). If this setting is not defined the Global Disable message will be sent once. It is only recommened to set this to a higher value if it is not possible to reliably get a response to a Specific Enable message on a particular chain. | An integer between 1 and 5. The default value is 1
+GDCount | The number of times a Global Disable message is sent out on a multidrop connection (a connection is assumed to be multidrop if a Device Id is defined for the meter). If this setting is not defined the Global Disable message will be sent once. It is only recommended to set this to a higher value if it is not possible to reliably get a response to a Specific Enable message on a particular chain. | An integer between 1 and 5. The default value is 1
 Pwdn | Level n password for the meter. | An integer corresponding to the level n password where n is 0..4 
 KeyRef | The Key Reference for password encryption. | A four digit integer corresponding to the key reference to the High Key
 LowKey | The Low Key for password encryption. | Up to an 8 digit integer corresponding to the Low key
@@ -1533,7 +1533,7 @@ PACT meter using the PACT protocol.
 
 All other details are the same as for the PAKNET version of the plugin. 
 
-> The [PRI Permier Meter PAKNET](#metering-plugins-metered-data-plugins-pri-premier-meter-paknet) plugin is normally recommended instead of this.
+> The [PRI Premier Meter PAKNET](#metering-plugins-metered-data-plugins-pri-premier-meter-paknet) plugin is normally recommended instead of this.
 
 ### PRI Liberty Meter
 
@@ -1561,7 +1561,7 @@ Relay PadPuls M1 M-Bus Pulse Counter and store the data as half-hour data.
 The pulse counter has a single register that corresponds to the 48 bit counter value. 
 The address used for the counter is not important 
 (although by convention can be set to 1). 
-When readinng the pulse counter any units defined in the unit 
+When reading the pulse counter any units defined in the unit 
 will be ignored and the units specified in the Meter Type will be used. 
 Note that the pulse counter has an inbuilt scaling factor that is read by DCS and applied to the counter value. 
 If a scaling factor is specified in the Meter
@@ -1726,7 +1726,7 @@ The data must be imported from a CSV file. The format is as follows:
 Column | Description        
 -------|------------
 Date | The date of the reading (format dd/MM/yyyy). 
-Time | The time of the manual reading period (UTC) (format HH:mm:ss). This column is optional and can be omitted entirely inwhich case the time is set to midnight. If the column is included but the value is blank for a particular row this will also be treated as midnight. 
+Time | The time of the manual reading period (UTC) (format HH:mm:ss). This column is optional and can be omitted entirely in which case the time is set to midnight. If the column is included but the value is blank for a particular row this will also be treated as midnight. 
 Register | The register id for which the manual reading applies. 
 Reading | The manual meter reading. 
         
@@ -1787,7 +1787,7 @@ that instead of one row per metering period there will be one
 row per day and the readings for each metering period will be in individual columns.
 
 ## Data Collection        
-The Data Collection Report will send an email with statistics and about the metered data that has been collected by DCS over the preceeding days
+The Data Collection Report will send an email with statistics and about the metered data that has been collected by DCS over the preceding days
 for all included Groups, Meters and Registers. The report can be used to ensure that data is being collected reliably. If a Group is included all Meters in the Group and all Registers in the each Meter will be included. If a Meter is included all Registers in the Meter will be included.
 
 Note that the report frequency for this report can be Daily or Weekly. In the case of a Daily report the Data Collection for the previous 10 days is shown. In the case of a Weekly report the last 20 days are shown.
@@ -1817,10 +1817,10 @@ Column | Position | Description
 ID | A1 | The ID of the register or virtual meter in the form Rx or VMx where x is an integer, e.g. to specify the register with ID 99 this column would contain R99, to specify the virtual meter with ID 27 this column would contain VM27.
 LowerLimit | B1 | A numerical value representing the lower limit that the daily total must be equal to or greater than for the specified register or virtual meter. This column may be left empty, in which case there is no lower limit.
 UpperLimit | C1 | A numerical value representing the upper limit that the daily total must be equal to or less than for the specified register or virtual meter. This column may be left empty, in which case there is no upper limit.
-DoW Filter | D1 | Optional column. If the Day of Week Filter exists the daily total is calcuated only for days that correspond to the filter. The filter format consist of a 7 character string with each position representing a day of the week starting with Monday. To include a day of the week the corresponding position must contain the first character of the day, to exclude a day of the week the corresponding position must contain a character other than the first character of the day. E.g. 'xTWxxxx' would include Tuesday and Wednesday, '.TWTF..' would include Tuesday, Wednesday, Thursday and Friday, etc. Special "shorthand strings" Weekdays, Weekends exist. A non-existent or blank DoW Filter means all days of the week. Beware if using '.' as the "don't include character" as Excel may convert 3 dots into an ellipsis which will give a format error when processing the file. 
+DoW Filter | D1 | Optional column. If the Day of Week Filter exists the daily total is calculated only for days that correspond to the filter. The filter format consist of a 7 character string with each position representing a day of the week starting with Monday. To include a day of the week the corresponding position must contain the first character of the day, to exclude a day of the week the corresponding position must contain a character other than the first character of the day. E.g. 'xTWxxxx' would include Tuesday and Wednesday, '.TWTF..' would include Tuesday, Wednesday, Thursday and Friday, etc. Special "shorthand strings" Weekdays, Weekends exist. A non-existent or blank DoW Filter means all days of the week. Beware if using '.' as the "don't include character" as Excel may convert 3 dots into an ellipsis which will give a format error when processing the file. 
 ToD Filter | E1 | Optional column. If the Time of Day Filter exists only readings that correspond to the filter will be included in the daily total. The filter format consists of a comma separated list of included time ranges in the format HH:mm-HH:mm. The start of the day is 00:00 and end of the day is 00:00. E.g. '09:00-17:00' means 9am to 5pm, and '00:00-09:00, 17:00-00:00' means all times except 9am to 5pm. Note that resolution is 30 minutes so time ranges like 09:45-10:51 are not supported.
 
-> A CSV file (with type "csv") can also be used to specifiy the input for this report. If using the ToD Filter in a CSV file a semicolon separated list of included time ranges should be used instead of a comma separated list.
+> A CSV file (with type "csv") can also be used to specify the input for this report. If using the ToD Filter in a CSV file a semicolon separated list of included time ranges should be used instead of a comma separated list.
         
 An simple example would be:
         
@@ -1871,7 +1871,7 @@ The format of the DCS sheet in the spreadsheet is as follows:
 
 Column | Position | Description
 -------|----------|------------                
-Source | A1 | The ID of the register or virtual meter in the form Rx/VMx where x is an integer,  e.g. to specify the register with ID 99 this column would contain R99. This field is madatory. 
+Source | A1 | The ID of the register or virtual meter in the form Rx/VMx where x is an integer,  e.g. to specify the register with ID 99 this column would contain R99. This field is mandatory. 
 StartDate | B1 | The start date for metered data relative to when the report is generated (see format below). Note that 2 and only 2 of the fields *StartDate*, *EndDate* and *Span* must be present.
 Span | C1 | The date span from the start date metered data (see format below). Note that 2 and only 2 of the fields *StartDate*, *EndDate* and *Span* must be present.
 EndDate | D1 | The end date for metered data relative to when the report is generated (see format below). Note that 2 and only 2 of the fields *StartDate*, *EndDate* and *Span* must be present.
@@ -1986,7 +1986,7 @@ Upper Threshold | H1 | The maximum amount that the current average is expected t
 NB: The order of the columns is actually not significant as the column heading will be used to find the correct column.
 If a column has an unrecognised heading then it will be ignored, therefore it possible to put descriptive columns such as "Comments" for users. Note also that columns names are NOT case sensitive.
 
-An example to compare the daily consumption for a series of register with the daily average for the previous 10 days with various threholds.
+An example to compare the daily consumption for a series of register with the daily average for the previous 10 days with various thresholds.
         
 |   | A | B | C | D | E | F          
 |---|---|---|---|---|---|---
@@ -2007,7 +2007,7 @@ An example to compare the average daily consumption for the week for a series of
         
 ## IDC Status Report        
 The IDC Status report will list all IDCs that have gone offline during the reporting period.
-If the user suscribes to this report it will only be emailed if an
+If the user subscribes to this report it will only be emailed if an
 IDC goes offline during the reporting period.
 
 ## Readings Chart Report
@@ -2018,7 +2018,7 @@ Note that all Registers in Meters which have Data Collection Disabled set will N
         
 ## Total Threshold Report
 The Total Threshold Report compares the current total for a register with a specified maximum value.
-If the value is above a specified alarm threshold this is hightlighted in the report and the report is emailed to any subscribers.
+If the value is above a specified alarm threshold this is highlighted in the report and the report is emailed to any subscribers.
 
 The input for the report must be specified in a CSV file or Microsoft Office 2007 (or later) Excel file which can be uploaded when editing a subscription settings. The file must be of type "csv" or "xlsx" and
 have the following format:
@@ -2037,6 +2037,6 @@ An example would be:
 | 2 | R10 | 100000 | 80
 | 3 | R110 | 1000 | 70
         
-If the user suscribes to this report it will only be emailed if one or more totals have reached the alarm threshold.
+If the user subscribes to this report it will only be emailed if one or more totals have reached the alarm threshold.
 
 
