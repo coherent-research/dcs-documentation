@@ -24,8 +24,8 @@ DCS comes with a number of *System Defined Meter Types* for popular meters. The 
 
 *Meters* may be logically partitioned into a hierarchy
 of *Meter Groups* (see 
-[Managing Meter Groups](#managing-meter-groups). *IDCs* may be logically partitioned into a hierarchy
-of *IDC Groups* (see [Managing IDC Groups](#managing-idc-groups).
+[Managing Meter Groups](#managing-meters-and-virtual-meters-managing-meter-groups)). *IDCs* may be logically partitioned into a hierarchy
+of *IDC Groups* (see [Managing IDC Groups](#managing-idcs-managing-idc-groups)).
 
 A *Calibration Reading* is usually derived by manually reading the display of the physical meter and recording the value and time.
 When this calibration reading is entered into DCS it is used to calculate an offset between the value entered and the reading in the database at the corresponding time (linearly interpolated between half hour values).
@@ -99,7 +99,7 @@ Link text | The text that will be displayed of the URL is used.
 - Enter the fields according to the table below.
 - Press the **Save** button to confirm the creation of the meter.
 
-> When a meter is created only the registers designated as *Default* in the *Meter Type* will be created automatically. To add extra registers see [Add register](#managing-meter-groups-meters-and-virtual-meters-managing-meters-adding-a-register).
+> When a meter is created only the registers designated as *Default* in the *Meter Type* will be created automatically. To add extra registers see [Add register](#managing-meters-and-virtual-meters-managing-meters-adding-a-register).
 
 Field | Description
 ------|------------
@@ -708,7 +708,7 @@ It is possible to partition IDCs logically into a hierarchy of groups in exactly
 - Alternatively click on the **Show flat list** button to display all IDCSin a flat list and use the filter bar to narrow the list down to the required IDCs. 
 
 ## Adding IDCs        
-IDCs are automatically added to DCS when they first connect. One IDC Group will be defined as the default group and IDCs will automatically be assigned to that group (see chapter </a><a href="#MI4D">Managing IDC Groups</a>).
+IDCs are automatically added to DCS when they first connect. One IDC Group will be defined as the default group and IDCs will automatically be assigned to that group (see [Managing IDC Groups](#managing-idcs-managing-idc-groups)).
 
 ## Viewing IDC status
 - Select the IDC and open the ***Device Info** tab. This will show information about the IDC device and its current status. 
@@ -1080,9 +1080,9 @@ A user has an associated role: guest, viewer, operator or administrator.
 Role | Capabilities | Usage
 -----|--------------|------
 Administrator | Administrator are permitted to perform all tasks in DCS | Limit the number of Administrators to a small number of trusted, capable users.
-Operators | An operator can create, edit and delete meters, virtual meters or groups and manage IDCs unless they are restricted to certain groups by an administrator (see[User Restricted Groups](#user-restricted-groups)). An operator may view Meter Types but not create, delete or modify them. They may not view the **Admins** page. They may also view and create their own reports and view all public reports. | This role is designed for users who will use all aspects of the system be may be restricted to certain groups of meters or IDCs.
-Viewer | The viewer may view virtually all parts of the system but they have strictly read only access. Viewers can not create, edit and delete meters, virtual meters or groups. Viewers can be restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). Viewer may view but not edit Meter Types, IDCs and Administration functions with the exception of the Users table. They may also view and create their own reports and view all public reports. | This role is usually just used for demonstration purposes.
-Guest | Guests are essentially only allowed to view Metered Data. They can view any of the groups, meters (meter passwords and remote addresses will be hidden) or virtual meters unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)); however they may not create, modify or delete any of them. They may not interrogate meters or import any data. They can not interact with IDCs, view the event log or access any administrative functions. They may view and create their own reports and view all public reports. | Use this role if the user needs to be restricted to a subset of meters and should only be authorised to view Metered Data  
+Operators | An operator can create, edit and delete meters, virtual meters or groups and manage IDCs unless they are restricted to certain groups by an administrator (see [Meter Restriction Profiles](#managing-users-meter-restriction-profiles) and  [IDC Restriction Profiles](#managing-users-idc-restriction-profiles)). An operator may view Meter Types but not create, delete or modify them. They may not view the **Admins** page. They may also view and create their own reports and view all public reports. | This role is designed for users who will use all aspects of the system be may be restricted to certain groups of meters or IDCs.
+Viewer | The viewer may view virtually all parts of the system but they have strictly read only access. Viewers can not create, edit and delete meters, virtual meters or groups. Viewers can be restricted to certain groups by an administrator (see [Meter Restriction Profiles](#managing-users-meter-restriction-profiles) and [IDC Restriction Profiles](#managing-users-idc-restriction-profiles)). Viewer may view but not edit Meter Types, IDCs and Administration functions with the exception of the Users table. They may also view and create their own reports and view all public reports. | This role is usually just used for demonstration purposes.
+Guest | Guests are essentially only allowed to view Metered Data. They can view any of the groups, meters (meter passwords and remote addresses will be hidden) or virtual meters unless they are restricted to certain groups by an administrator (see [Meter Restriction Profiles](#managing-users-meter-restriction-profiles) and  [IDC Restriction Profiles](#managing-users-idc-restriction-profiles)); however they may not create, modify or delete any of them. They may not interrogate meters or import any data. They can not interact with IDCs, view the event log or access any administrative functions. They may view and create their own reports and view all public reports. | Use this role if the user needs to be restricted to a subset of meters and should only be authorised to view Metered Data  
 
 ## Viewing users
 - Select **Admin > User admin** in the main navigation bar and then open the **User accounts** panel to display a table of all users.
@@ -1112,7 +1112,7 @@ IDC restriction profile | An optional profile that can be applied to the user to
 ## Deleting a User
 - Delete a user by using the action menu on the right of the table row and clicking **Delete user**.      
 
-## Meter Restricted Profiles
+## Meter Restriction Profiles
 It is possible for users (except administrators) to be given a Meter Restriction Profile. This profiles specifies which subset of meter groups that the user may access. A Meter Restriction Profile can be applied to any number of users. 
 
 A Meter Restriction Profile is a nested Granted/Denied list of Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
@@ -1152,7 +1152,7 @@ User default | If selected new users (except Administrators) will be given this 
 ### Deleting a Meter Restriction Profiles
 - Delete a Meter Restriction Profiles by using the action menu on the right of the table row and clicking **Delete profile**.      
 
-## IDC Restricted Profiles
+## IDC Restriction Profiles
 It is possible for users (except administrators) to be given a IDC Restriction Profile. This profiles specifies which subset of IDC groups that the user may access. A IDC Restriction Profile can be applied to any number of users. 
 
 An IDC Restriction Profile is a nested Granted/Denied list of IDC Groups. A few examples best illustrates the use of a restriction profiles.
