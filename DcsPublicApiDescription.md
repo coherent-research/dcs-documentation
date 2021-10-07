@@ -14,7 +14,7 @@ The API can be configured via DCSWebApp application settings in 2 modes:
 
 - Authenticated
 
-  All calls to the API must contain a security token which will be obtained by the sign-in method (see xxx). The credentials used to sign-in in will correspond to normal DCS user account.
+  All calls to the API must contain a security token which will be obtained by the sign-in method (see below). The credentials used to sign-in in will correspond to normal DCS user account.
 
   When called in Authenticated mode restrictions applied with respect to call rate and the quantity of data requested.
 
@@ -22,7 +22,7 @@ The API can be configured via DCSWebApp application settings in 2 modes:
 
   Calls to the API do not need to contain a security token so no sign-in is required. All calls to the API will use a default DCS user account that can be configured via DCSWebApp application settings.
 
-  When called in Unauthenticated mode more severe restrictions are applied with respect to call rate and the quantity of data requested.
+  When called in Unauthenticated mode restrictions are applied with respect to call rate and the quantity of data requested.
 
 > It is possible to configure the API with both modes simultaneously. The URL used for each mode will be different.
 
@@ -418,10 +418,28 @@ Content-Type: application/json; charset=utf-8
 
 ```
 
-## Restrictions and rate limiting
+## Rate limiting
 
-TODO
+Rate limiting can be applied to the Authenticated and the Unauthenticated endpoints independently.
+
+For each endpoint it is possible to specify the maximum number of requests per time period, e.g. 100 requests per minute, or 10 requests per second.
+
+When the rate is exceeded the request will be rejected with the HTTP status code 429. The contents of the response will contain a JSON object with the following properties
+
+| Property          | Value                                                          | Note |
+| ----------------- | -------------------------------------------------------------- | ---- |
+| backOffSuggestion | A suggested period that the caller should wait before retrying |      |
+
+## User restrictions
+
+Irrespective of whether the Authenticated or Unauthenticated mode is used each call will be associated with a normal DCS user account. For the Authenticated mode the user account will correspond to the user name specified during the login, while for the Unauthenticated mode the user account will be the default account configured for this purpose.
+
+In either case DCS will apply the normal users restrictions to the API call, i.e. the Meter Restriction profile will apply as normal and user restrictions such as expiration date, access start and end dates etc will apply as normal.
+
+In addition a further restriction can be configured to limit the allowed data range GetMeteredData method for each mode. If the requested data range exceeds the allowed range the request will be rejected with the HTTP status code 400 along with an appropriate error message.
 
 ## Configuration
 
 The public API are configured by changing the settings in the DCSWebAppSettings file.
+
+Details to come.
