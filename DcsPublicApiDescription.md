@@ -109,14 +109,27 @@ GET URL?param1=value1&param2=value2
 Standard HTTP response codes are used in the response to all queries.
 The following codes are used
 
-| Response code             | Meaning                                                                                                                                                                                       |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 200 OK                    | Indicates that the query was successful and the response body will contain a JSON object (or array of objects) with the requested data.                                                       |
-| 400 Bad Request           | Indicates the request is not valid or understood by DCS. The body of the response will provide more details as to why the request is considered bad.                                          |
-| 401 Unauthorized          | Indicates that the caller has not provided a valid authentication token (if required). See above                                                                                              |
-| 403 Forbidden             | Indicates that the caller does not have the appropriate authority to perform the request (even though the authentication token is valid). The body of the response will provide more details. |
-| 429 Too Many Requests     | Indicates that the caller has sent too many requests in a given amount of time.                                                                                                               |
-| 500 Internal Server Error | Indicates a fault on the server. This should be considered a DCS error and raise the issue with the server administrator                                                                      |
+| Response | Meaning               | Use                                                                                                                                                                                           |
+| -------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 200      | OK                    | Indicates that the query was successful and the response body will contain a JSON object (or array of objects) with the requested data.                                                       |
+| 400      | Bad Request           | Indicates the request is not valid or understood by DCS. The body of the response will provide more details as to why the request is considered bad.                                          |
+| 401      | Unauthorized          | Indicates that the caller has not provided a valid authentication token (if required). See above                                                                                              |
+| 403      | Forbidden             | Indicates that the caller does not have the appropriate authority to perform the request (even though the authentication token is valid). The body of the response will provide more details. |
+| 429      | Too Many Requests     | Indicates that the caller has sent too many requests in a given amount of time.                                                                                                               |
+| 500      | Internal Server Error | Indicates a fault on the server. This should be considered a DCS error and raise the issue with the server administrator                                                                      |
+
+For each error response (i.e. where the response code does not equal 200) the payload will be a JSON object with the following properties:
+
+| Property | Value                     | Note                                 |
+| -------- | ------------------------- | ------------------------------------ |
+| details  | Reason the request failed | This will be a human readable string |
+
+In certain cases extra fields may be added to the response object (e.g. see the chapter on Rate limiting below).
+
+## Future compatibility
+
+It is envisaged that the response payloads may gain extra properties over time. Therefore to
+assist in maintaining future compatibility the consumers of the service should silently ignore any properties in the response payloads that are recognised.
 
 # Meters and Virtual Meters
 
@@ -152,7 +165,7 @@ Note that only a subset of the properties are documented here.
 | status           | Online, offline, disabled, unknown                                    | Online/offline status is determine by the age of the latest reading compared to what would be expected for the connectionMethod. Disabled indicates that data collection has been disabled. |
 | registers        | Array of register objects                                             | See below                                                                                                                                                                                   |
 
-Register objects
+**Register objects**
 
 | Property           | Value                                                            | Note                             |
 | ------------------ | ---------------------------------------------------------------- | -------------------------------- |
@@ -227,7 +240,7 @@ Note that only a subset of the properties are documented here.
 | unit            | Unit for readings                                                                       |
 | registerAliases | Array of register alias objects                                                         | A register alias refers to a register in a meter by a name used in the express. See below |
 
-Register alias objects
+**Register alias objects**
 
 | Property   | Value                                          | Note                                |
 | ---------- | ---------------------------------------------- | ----------------------------------- |
@@ -422,7 +435,7 @@ Rate limiting can be applied to the Authenticated and the Unauthenticated endpoi
 
 For each endpoint it is possible to specify the maximum number of requests per time period, e.g. 100 requests per minute, or 10 requests per second.
 
-When the rate is exceeded the request will be rejected with the HTTP status code 429. The contents of the response will contain a JSON object with the following properties
+When the rate is exceeded the request will be rejected with the HTTP status code 429. The following property contents of the response will contain a JSON object with the following properties
 
 | Property          | Value                                                          | Note |
 | ----------------- | -------------------------------------------------------------- | ---- |
