@@ -3,30 +3,26 @@
 # Introduction
 
 DCS has been designed to integrate seamlessly with other systems.
-In order to provide this integration a JSON based Web API is
+In order to enable this integration a JSON based Web API is
 provided that allows programmatic access to metered data that has been collected by DCS.
+
+The API is deployed as a separate application (DcsWebApi) in IIS. It is envisaged that this will be deployed in the same instance of IIS that hosts DcsWebApp but that is not a requirement. DcsWebApi must have access to the DCS Database but otherwise it does not interact with other DCS components.
 
 # Authentication
 
 ## Modes
 
-The API can be configured via DCSWebApp application settings in 2 modes:
+The API has two modes:
 
 - Authenticated
 
-  All calls to the API must contain a security token which will be obtained by the sign-in method (see below). The credentials used to sign-in in will correspond to normal DCS user account.
-
-  When called in Authenticated mode restrictions applied with respect to call rate and the quantity of data requested.
+  All calls to the API must contain a security token which will be obtained by the sign-in method (see below). The credentials used to sign-in in will correspond to normal a DCS user account (managed by DcsWebApp).
 
 - Unauthenticated
 
-  Calls to the API do not need to contain a security token so no sign-in is required. All calls to the API will use a default DCS user account that can be configured via DCSWebApp application settings.
+  Calls to the API do not need to contain a security token so no sign-in is required. All calls to the API will use a default DCS user account. The account correspond to normal DCS user account (managed by DcsWebApp) and the actual account that is used is configurable in the DcsWebApi application.
 
-  When called in Unauthenticated mode restrictions are applied with respect to call rate and the quantity of data requested.
-
-> It is possible to configure the API with both modes simultaneously. The URL used for each mode will be different.
-
-> By default the public API will be disabled.
+> It is possible to configure the API with either mode or both modes simultaneously. The URL used for each mode will be different.
 
 ## Authenticated mode
 
@@ -54,19 +50,19 @@ POST /api/Account/login
 
 If the credentials are correct the server will respond with
 response code 200 and a cookie containing an authentication
-token. The cookie name will start with COHERENT-DCSV3.
+token. The cookie name will start with COHERENT-DCS-API.
 
 ### Sample
 
 ```
-POST https://www.coherent-research.co.uk/DCS/api/account/login
+POST https://www.coherent-research.co.uk/DCSWebApi/account/login
 content-type: application/json
 
 {"username": "user", "password": "mypassword" }
 
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
-Set-Cookie: COHERENT-DCSV3 ...
+Set-Cookie: COHERENT-DCS-API ...
 
 {
   "username": "user",
@@ -79,7 +75,7 @@ The cookie should be sent by the client to the
 server in all subsequent HTTP messages. The information returned in
 the response body is for information only.
 
-> The authentication cookie will have an expiration time after which
+> The authentication cookie will have a configurable expiration time after which
 > it will no longer be accepted by the server and the server will respond
 > to all requests with response code 401. In this case the login
 > message must be repeated to obtain a new authentication token.
@@ -87,7 +83,7 @@ the response body is for information only.
 Once authenticated the caller can access the API via the URL:
 
 ```
-https://HOSTNAME/DCS/api/METHOD
+https://HOSTNAME/DCSWebApi/METHOD
 ```
 
 ## Unauthenticated mode
@@ -95,15 +91,14 @@ https://HOSTNAME/DCS/api/METHOD
 In this mode no sign-in is required and the caller can access the API via the URL:
 
 ```
-https://HOSTNAME/DCS/api/public/METHOD
+https://HOSTNAME/DCSWebApi/public/METHOD
 ```
 
 # Queries
 
 ## Requests
 
-All queries to DCS will use a HTTP GET request message and the parameters will be sent as part of the URL
-as a query string in the form:
+All queries will use a HTTP GET request message and the parameters will be sent as part of the URL as a query string in the form:
 
 ```
 GET URL?param1=value1&param2=value2
@@ -114,14 +109,14 @@ GET URL?param1=value1&param2=value2
 Standard HTTP response codes are used in the response to all queries.
 The following codes are used
 
-| Response code             | Meaning                                                                                                                                                                                                                |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 200 OK                    | Indicates that the query was successful and the response body will contain a JSON object (or array of objects) with the requested data.                                                                                |
-| 400 Bad Request           | Indicates the request is not valid or understood by DCS. The body of the response will provide more details of why the request is considered bad.                                                                      |
-| 401 Unauthorized          | Indicates that the caller has not provided a valid authentication token. See above                                                                                                                                     |
-| 403 Forbidden             | Indicates that the caller does not have the appropriate authority to perform the request (even though the authentication token is valid). This implies that the DCS account being used does not have the correct role. |
-| 429 Too Many Requests     | Indicates that the caller has sent too many requests in a given amount of time.                                                                                                                                        |
-| 500 Internal Server Error | Indicates a fault on the server. Contact the DCS administrator.                                                                                                                                                        |
+| Response code             | Meaning                                                                                                                                                                                       |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 200 OK                    | Indicates that the query was successful and the response body will contain a JSON object (or array of objects) with the requested data.                                                       |
+| 400 Bad Request           | Indicates the request is not valid or understood by DCS. The body of the response will provide more details as to why the request is considered bad.                                          |
+| 401 Unauthorized          | Indicates that the caller has not provided a valid authentication token (if required). See above                                                                                              |
+| 403 Forbidden             | Indicates that the caller does not have the appropriate authority to perform the request (even though the authentication token is valid). The body of the response will provide more details. |
+| 429 Too Many Requests     | Indicates that the caller has sent too many requests in a given amount of time.                                                                                                               |
+| 500 Internal Server Error | Indicates a fault on the server. This should be considered a DCS error and raise the issue with the server administrator                                                                      |
 
 # Meters and Virtual Meters
 
@@ -149,8 +144,11 @@ Note that only a subset of the properties are documented here.
 | connectionMethod | tcp, modem, idc                                                       | How DCS connects to collect data                                                                                                                                                            |
 | deviceId         | Outstation address                                                    | Form depends on type of meter                                                                                                                                                               |
 | name             | Unique meter name                                                     |
+| meterType        | Meter type name                                                       |
 | remoteAddress    | Address used to communicate with meter, e.g. IP address, modem number | Form depends on connectionMethod                                                                                                                                                            |
 | serialNumber     | Manufacturer's meter serial number                                    | Form depends on type of meter                                                                                                                                                               |
+| mpn              | Metering point number                                                 | Will be included if set in DCS                                                                                                                                                              |
+| service          | Meter service                                                         | Will be included if set in DCS                                                                                                                                                              |
 | status           | Online, offline, disabled, unknown                                    | Online/offline status is determine by the age of the latest reading compared to what would be expected for the connectionMethod. Disabled indicates that data collection has been disabled. |
 | registers        | Array of register objects                                             | See below                                                                                                                                                                                   |
 
@@ -172,7 +170,7 @@ Note that some properties have been removed for simplicity.
 
 ```
 GET https://www.coherent-research.co.uk/DCS/api/meters
-Cookie: COHERENT-DCSV3...
+Cookie: COHERENT-DCS-API...
 
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
@@ -242,7 +240,7 @@ Note that some properties have been removed for simplicity.
 
 ```
 GET https://www.coherent-research.co.uk/DCS/api/virtualMeters
-Cookie: COHERENT-DCSV3...
+Cookie: COHERENT-DCS-API...
 
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
@@ -291,11 +289,11 @@ GET api/getmetereddata?QUERYSTRING
 
 | Name         | Value                                                                                                                      | Note                                                                                                                                                                                                                |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| id           | Id of the register or virtual meter in the form Rx or VMx where x corresponds to the register's or virtual meter's DCS ID. | Required. If R and VM are omitted the id is assumed to refer to a DCS register ID.                                                                                                                                  |
+| id           | Id of the register or virtual meter in the form Rx or VMx where x corresponds to the register's or virtual meter's DCS ID. | Required.                                                                                                                                                                                                           |
 | format       | Specifies the format of the data that will be returned. The options are: standard, expanded                                | Optional, default is _standard_. See below for more details.                                                                                                                                                        |
-| dateTime     | Start date/time in ISO 8601 format.                                                                                        | Required. Note that the start date/time must be consistent with the IntegrationPeriod, e.g. if the integration period is set specified as 'week' **dateTime** must correspond to the start of a calendar week.      |
+| dateTime     | Start date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z                                      | Required. Note that the start date/time must be consistent with the IntegrationPeriod, e.g. if the integration period is set specified as 'week' **dateTime** must correspond to the start of a calendar week.      |
 | periodCount  | The number of periods.                                                                                                     | Optional. Alternatively the **end** parameter can be specified. Either **periodCount** or **end** must be specified.                                                                                                |
-| end          | End date/time (exclusive) in ISO 8601 format.                                                                              | Required. Note that the start date/time must be consistent with the IntegrationPeriod.                                                                                                                              |
+| end          | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Required. Note that the start date/time must be consistent with the **IntegrationPeriod** and greater than the **startTime**                                                                                        |
 | periodType   | halfHour, hour, day, week, month                                                                                           | Optional, default is halfHour.                                                                                                                                                                                      |
 | calibrated   | false or true                                                                                                              | If set any Calibration Readings associated with the register will be used to adjust the TotalValues. Optional, default is true                                                                                      |
 | interpolated | false or true                                                                                                              | If set DCS will attempt to estimate values for any missing data. Optional, default is true                                                                                                                          |
@@ -323,7 +321,7 @@ A single object the contains the following properties:
 **consumptionByPeriod** is an array of objects each of which corresponds to a single reading. Each object has the following properties:
 | Property | Value | Note |
 | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| startDateTime | Start of period timestamp | ISO 8601 format
+| startDateTime | Start of period timestamp | In the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z
 | value | Consumption for the period | If the register is instantaneous this will always be 0 |
 | isPadded | Specifies if the value was generated to pad out missing data |
 
@@ -347,7 +345,7 @@ Authenticated mode, format = expanded
 ```
 GET https://www.coherent-research.co.uk/DCS/api/getmetereddata?id=r100 ...
        &dateTime=2019-02-01&end=2019-02-01&periodType=hour
-Cookie: COHERENT-DCSV3...
+Cookie: COHERENT-DCS-API...
 
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
@@ -430,16 +428,24 @@ When the rate is exceeded the request will be rejected with the HTTP status code
 | ----------------- | -------------------------------------------------------------- | ---- |
 | backOffSuggestion | A suggested period that the caller should wait before retrying |      |
 
+> Rate limiting applies to an endpoint and not a client, in other words the rate limit applies to requests to an endpoint from **all** users.
+
+## Query restrictions
+
+Irrespective of whether the Authenticated or Unauthenticated mode the caller will be limited to a maximum date range when calling the GetMeteredData method. The size of the date range will be configurable for each mode separately.
+
+If the requested data range exceeds the allowed range the request will be rejected with the HTTP status code 400 along with an appropriate error message.
+
 ## User restrictions
 
 Irrespective of whether the Authenticated or Unauthenticated mode is used each call will be associated with a normal DCS user account. For the Authenticated mode the user account will correspond to the user name specified during the login, while for the Unauthenticated mode the user account will be the default account configured for this purpose.
 
 In either case DCS will apply the normal users restrictions to the API call, i.e. the Meter Restriction profile will apply as normal and user restrictions such as expiration date, access start and end dates etc will apply as normal.
 
-In addition a further restriction can be configured to limit the allowed data range GetMeteredData method for each mode. If the requested data range exceeds the allowed range the request will be rejected with the HTTP status code 400 along with an appropriate error message.
+If the caller is restricted from access the requested data the request will be rejected with the HTTP status code 403 along with an appropriate error message.
 
 ## Configuration
 
-The public API are configured by changing the settings in the DCSWebAppSettings file.
+All configurable options for the API are configured by changing the settings in the DCSWebApi Settings file. This file is a JSON file called appsettings.json which can be found in the directory when DcsWebApi is stalled.
 
 Details to come.
