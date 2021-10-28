@@ -6,4 +6,5 @@ Contents:
 - [Installation guide](DCSInstallationGuide.md)
 - [Configuration notes](DcsConfigurationNotes.md)
 - [Web API description](DCSApiDescription.md)
+- [New public API proposal](DcsPublicApiDescription.md)
 
