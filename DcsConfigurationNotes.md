@@ -3,7 +3,7 @@
 It is possible to override the default emails that are sent when user accounts are created etc.
 
 The following actions will result in a notification email being sent to the user. 
-The format of each email can be overwritten by the given template which must exist in an EmailTemplate
+The format of each email can be overwritten by the given template which must exist in an **EmailTemplates**
 directory immediately under the directory where DCS Web App is installed.
 
 Note that each template must consist of HTML markup that will be included inside a HTML BODY element
