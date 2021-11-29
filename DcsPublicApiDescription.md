@@ -16,18 +16,22 @@ The API has two modes:
 
 - Authenticated
 
-  All calls to the API must contain a security token which will be obtained by the sign-in method (see below). The credentials used to sign-in in will correspond to normal a DCS user account (managed by DcsWebApp).
+  All calls to the API must contain a security token which will be
+  obtained by the sign-in method (see below).
+  The credentials used to sign-in in will correspond to a normal DCS user account (managed by DcsWebApp).
 
 - Unauthenticated
 
-  Calls to the API do not need to contain a security token so no sign-in is required. All calls to the API will use a default DCS user account. The account correspond to normal DCS user account (managed by DcsWebApp) and the actual account that is used is configurable in the DcsWebApi application.
+  Calls to the API do not need to contain a security token so no
+  sign-in is required. All calls to the API will use a default DCS user account.
+  The account corresponds to a normal DCS user account (managed by DcsWebApp) and the actual account that is used is configurable in the DcsWebApi application.
 
 > It is possible to configure the API with either mode or both modes simultaneously. The URL used for each mode will be different.
 
 ## Authenticated mode
 
 In this mode all calls to the Web API require an authentication token to be
-sent in a cookie as part of the HTTP request.
+sent in a cookie in the HTTP request headers.
 
 In order to obtain an authentication token the client must send a
 POST message providing valid DCS credentials to the server as a JSON object
@@ -36,7 +40,7 @@ in the request body.
 ### Request
 
 ```
-POST /api/Account/login
+POST /account/login
 ```
 
 ### JSON Parameters
@@ -84,6 +88,8 @@ Once authenticated the caller can access the API via the URL:
 
 ```
 https://HOSTNAME/DCSWebApi/METHOD
+Accept: application/json
+Cookie: COHERENT-DCS-API...
 ```
 
 ## Unauthenticated mode
@@ -92,6 +98,7 @@ In this mode no sign-in is required and the caller can access the API via the UR
 
 ```
 https://HOSTNAME/DCSWebApi/public/METHOD
+Accept: application/json
 ```
 
 # Queries
@@ -140,7 +147,7 @@ Returns a list of all meters defined in DCS including the registers for each met
 ### Request
 
 ```
-GET /api/meters
+GET /meters
 ```
 
 Returns an array of meter objects. Each meter object will contain 1 or more
@@ -182,7 +189,8 @@ Note that only a subset of the properties are documented here.
 Note that some properties have been removed for simplicity.
 
 ```
-GET https://www.coherent-research.co.uk/DCS/api/meters
+GET https://www.coherent-research.co.uk/DCSWebApi/meters
+Accept: application/json
 Cookie: COHERENT-DCS-API...
 
 HTTP/1.1 200 OK
@@ -221,7 +229,7 @@ register alias objects.
 ### Request
 
 ```
-GET /api/virtualMeters
+GET /virtualMeters
 ```
 
 Returns an array of virtual meter objects.
@@ -252,7 +260,8 @@ Note that only a subset of the properties are documented here.
 Note that some properties have been removed for simplicity.
 
 ```
-GET https://www.coherent-research.co.uk/DCS/api/virtualMeters
+GET https://www.coherent-research.co.uk/DCSWebApi/virtualMeters
+Accept: application/json
 Cookie: COHERENT-DCS-API...
 
 HTTP/1.1 200 OK
@@ -295,22 +304,21 @@ Returns an array of readings for the specified register or virtual meter and tim
 ## Request
 
 ```
-GET api/getmetereddata?QUERYSTRING
+GET metereddata?QUERYSTRING
 ```
 
 ## Query String Parameters
 
-| Name         | Value                                                                                                                      | Note                                                                                                                                                                                                                |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| id           | Id of the register or virtual meter in the form Rx or VMx where x corresponds to the register's or virtual meter's DCS ID. | Required.                                                                                                                                                                                                           |
-| format       | Specifies the format of the data that will be returned. The options are: standard, expanded                                | Optional, default is _standard_. See below for more details.                                                                                                                                                        |
-| dateTime     | Start date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z                                      | Required. Note that the start date/time must be consistent with the IntegrationPeriod, e.g. if the integration period is set specified as 'week' **dateTime** must correspond to the start of a calendar week.      |
-| periodCount  | The number of periods.                                                                                                     | Optional. Alternatively the **end** parameter can be specified. Either **periodCount** or **end** must be specified.                                                                                                |
-| end          | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Required. Note that the start date/time must be consistent with the **IntegrationPeriod** and greater than the **startTime**                                                                                        |
-| periodType   | halfHour, hour, day, week, month                                                                                           | Optional, default is halfHour.                                                                                                                                                                                      |
-| calibrated   | false or true                                                                                                              | If set any Calibration Readings associated with the register will be used to adjust the TotalValues. Optional, default is true                                                                                      |
-| interpolated | false or true                                                                                                              | If set DCS will attempt to estimate values for any missing data. Optional, default is true                                                                                                                          |
-| source       | automatic, manual, merged                                                                                                  | In DCS automatically collected readings can be supplemented with manual readings and this property can indicate whether to return use manual readings. Default value is Automatic and this should normally be used. |
+| Name         | Value                                                                                                                      | Note                                                                                                                                                                                                           |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id           | Id of the register or virtual meter in the form Rx or VMx where x corresponds to the register's or virtual meter's DCS ID. | Required.                                                                                                                                                                                                      |
+| format       | Specifies the format of the data that will be returned. The options are: standard                                          | Optional, default is _standard_. More options may be added in the future                                                                                                                                       |
+| startTime    | Start date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z                                      | Required. Note that the start date/time must be consistent with the IntegrationPeriod, e.g. if the integration period is set specified as 'week' **dateTime** must correspond to the start of a calendar week. |
+| periodCount  | The number of periods.                                                                                                     | Optional. Alternatively the **end** parameter can be specified. Either **periodCount** or **end** must be specified.                                                                                           |
+| endTime      | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Required. Note that the start date/time must be consistent with the **IntegrationPeriod** and greater than the **startTime**                                                                                   |
+| periodType   | halfHour, hour, day, week, month                                                                                           | Optional, default is halfHour.                                                                                                                                                                                 |
+| calibrated   | true or false                                                                                                              | If set to true any Calibration Readings associated with the register will be used to adjust the TotalValues. Optional, default is true                                                                         |
+| interpolated | true or false                                                                                                              | If set to true DCS will attempt to estimate values for any missing data. Optional, default is true                                                                                                             |
 
 ## Response
 
@@ -320,112 +328,71 @@ The format of the data returned in the response message depends ion the _format_
 
 A single object the contains the following properties:
 
-| Property            | Value                                                 | Note                                                                                                      |
-| ------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| startDateTime       | Start of range                                        | Corresponds to the **dateTime** parameter in the request                                                  |
-| endDateTime         | End of range                                          | Corresponds to the **end** parameter in the request (or calculated from **dateTime** and **periodCount**) |
-| meter               | The name of the name of the register or virtual meter | The register name will be the full register name, i.e. METER NAME: REGISTER NAME                          |
-| periodType          | halfHour, hour, day, week, month                      | Corresponds to the **periodType** parameter in the request                                                |
-| startMeterReading   | Total reading value at startDateTime                  |
-| endMeterReading     | Total reading value at endDateTime                    |
-| totalConsumption    | Total consumption over the requested period           |
-| consumptionByPeriod | See table below                                       |
+| Property        | Value                                                 | Note                                                                                                                                                                                                                                        |
+| --------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| startTime       | Start of range                                        | Corresponds to the **dateTime** parameter in the request                                                                                                                                                                                    |
+| endTime         | End of range                                          | Corresponds to the **end** parameter in the request (or calculated from **dateTime** and **periodCount**)                                                                                                                                   |
+| name            | The name of the name of the register or virtual meter | The register name will be the full register name, i.e. METER NAME: REGISTER NAME                                                                                                                                                            |
+| periodType      | halfHour, hour, day, week, month                      | Corresponds to the **periodType** parameter in the request                                                                                                                                                                                  |
+| unit            |                                                       |                                                                                                                                                                                                                                             |
+| readingDuration | The duration for each reading.                        | If the reading represents a meter total, or an instantanoues value this will be 0. If the reading represents consumption over time the duration will correspond to the periodType (this will normally only be the case for virtual meters). |
+| readings        | An array of reading objects. See table below          |
 
-**consumptionByPeriod** is an array of objects each of which corresponds to a single reading. Each object has the following properties:
-| Property | Value | Note |
-| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| startDateTime | Start of period timestamp | In the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z
-| value | Consumption for the period | If the register is instantaneous this will always be 0 |
-| isPadded | Specifies if the value was generated to pad out missing data |
+A **reading** object corresponds to a single reading and has the following properties:
 
-### format = expanded
+| Property       | Value                                       | Note |
+| -------------- | ------------------------------------------- | ---- |
+| timestamp      | The UTC time corresponding to the reading.  |      |
+| value          | The value of the reading                    |
+| isInterpolated | Specifies if the value was estimated by DCS |
 
-An array of objects each of which corresponds to a single reading. Each object has the following properties:
-
-| Property       | Value                                                        | Note                                                                           |
-| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| startTime      | Start of period timestamp                                    |
-| duration       | Period length in minutes                                     | Corresponds to integrationPeriod in query                                      |
-| totalValue     | Register total at startTime                                  |
-| periodValue    | Consumption for the period                                   | If the register is instantaneous this will always be 0                         |
-| isGenerated    | Specifies if the value was generated to pad out missing data |
-| isInterpolated | Specifies if the value was estimated by DCS                  | Corresponds to interpolated in query (IsGenerated is undefined if this is set) |
+> If the **interpolated** query parameter was set to false readings that are unavaliable in DCS will not be
+> present in the array and therefore the reading may not be contiguous.
 
 ### Samples
 
-Authenticated mode, format = expanded
+Authenticated mode, format = standard
 
 ```
-GET https://www.coherent-research.co.uk/DCS/api/getmetereddata?id=r100 ...
-       &dateTime=2019-02-01&end=2019-02-01&periodType=hour
+GET https://www.coherent-research.co.uk/DCSWebApi/metereddata?id=r100 ...
+       &startTime=2021-09-20T18:00:00Z&periodCount=4&periodType=halfHour
+Accept: application/json
 Cookie: COHERENT-DCS-API...
 
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
 
-[
-  {
-    "id": 26167735,
-    "startTime": "2019-02-01T00:00:00Z",
-    "duration": 30,
-    "totalValue": 10161.0,
-    "periodValue": 10.0,
-    "isGenerated": false,
-    "isInterpolated": false
-  },
-  {
-    "id": 26167736,
-    "startTime": "2019-02-01T00:30:00Z",
-    "duration": 30,
-    "totalValue": 10172.0,
-    "periodValue": 5.0,
-    "isGenerated": false,
-    "isInterpolated": false
-  },
-  ...
-]
-```
-
-Unauthenticated mode, format = standard
-
-```
-GET https://www.coherent-research.co.uk/DCS/api/getmetereddata?id=r100 ...
-       &dateTime=2021-09-20T18:00:00Z&periodCount=4&periodType=halfHour
-
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-
 {
-  "consumptionByPeriod":
+
+ "endTime": "2021-09-20T20:00:00Z",
+ "name": "Electricity: Active Energy Import",
+ "periodType": "halfHour",
+ "startTime": "2021-09-20T18:00:00Z",
+ "duration": 0,
+ "unit": "kWh",
+ "readings":
     [
       {
-        "isPadding":false,
-        "startDateTime":"2021-09-20T18:00:00Z",
-        "value":9.0400000000008731
+        "isInterpolated":false,
+        "timestamp":"2021-09-20T18:00:00Z",
+        "value":9.04
       },
       {
-        "isPadding":false,
-        "startDateTime":"2021-09-20T18:30:00Z",
-        "value":8.39999999999418
+        "isInterpolated":true,
+        "timestamp":"2021-09-20T18:30:00Z",
+        "value":18.04
       },
       {
-        "isPadding":false,
-        "startDateTime":"2021-09-20T19:00:00Z",
-        "value":8.0800000000017462
+        "isInterpolated":true,
+        "timestamp":"2021-09-20T19:00:00Z",
+        "value":43.08
       },
       {
-        "isPadding":false,
-        "startDateTime":"2021-09-20T19:30:00Z",
-        "Value":0.0
+        "isInterpolated":false,
+        "timestamp":"2021-09-20T19:30:00Z",
+        "Value":59.0
       }
     ],
-  "endDateTime":"2021-09-20T20:00:00Z",
-  "endMeterReading":3686343.96,
-  "meter":"Elec",
-  "periodType":"HalfHour",
-  "startDataTime":"2021-09-20T18:00:00Z",
-  "startMeterReading":3686318.44,
-  "totalConsumption":25.5199999999968,
 
 ```
 
@@ -437,9 +404,9 @@ For each endpoint it is possible to specify the maximum number of requests per t
 
 When the rate is exceeded the request will be rejected with the HTTP status code 429. The following property contents of the response will contain a JSON object with the following properties
 
-| Property          | Value                                                          | Note |
-| ----------------- | -------------------------------------------------------------- | ---- |
-| backOffSuggestion | A suggested period that the caller should wait before retrying |      |
+| Property          | Value                                                          | Note       |
+| ----------------- | -------------------------------------------------------------- | ---------- |
+| backOffSuggestion | A suggested period that the caller should wait before retrying | In seconds |
 
 > Rate limiting applies to an endpoint and not a client, in other words the rate limit applies to requests to an endpoint from **all** users.
 
@@ -462,3 +429,13 @@ If the caller is restricted from access the requested data the request will be r
 All configurable options for the API are configured by changing the settings in the DCSWebApi Settings file. This file is a JSON file called appsettings.json which can be found in the directory when DcsWebApi is stalled.
 
 Details to come.
+
+| Property                  | Value                                                                 | Note                                                                             |
+| ------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| privateEndPointEnabled    | true or false                                                         | Specifies if the authenticated end point is enabled. Optional, default = false   |
+| privateEndPointRateLimit  | Maximum number of requests per second                                 |
+| privateEndPointRangeLimit | Maximum timespan a metered data request can cover as a number of days | If set to 0 or omitted no limit will be applied.                                 |
+| publicEndPointEnabled     | true or false                                                         | Specifies if the unauthenticated end point is enabled. Optional, default = false |
+| publicEndPointRateLimit   | Maximum number of requests per second                                 |
+| publicEndPointRangeLimit  | Maximum timespan a metered data request can cover as a number of days | If set to 0 or omitted no limit will be applied.                                 |
+| publicEndPointAccount     | User account that will be used for the unauthenticated end point      |                                                                                  |
