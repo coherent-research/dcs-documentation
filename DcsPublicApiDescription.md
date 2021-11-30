@@ -309,16 +309,36 @@ GET metereddata?QUERYSTRING
 
 ## Query String Parameters
 
-| Name         | Value                                                                                                                      | Note                                                                                                                                                                                                            |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| id           | Id of the register or virtual meter in the form Rx or VMx where x corresponds to the register's or virtual meter's DCS ID. | Required.                                                                                                                                                                                                       |
-| format       | Specifies the format of the data that will be returned. The options are: standard                                          | Optional, default is _standard_. More options may be added in the future                                                                                                                                        |
-| startTime    | Start date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z                                      | Required. Note that the start date/time must be consistent with the IntegrationPeriod, e.g. if the integration period is set specified as 'week' **startTime** must correspond to the start of a calendar week. |
-| periodCount  | The number of periods.                                                                                                     | Optional. Alternatively the **endTime** parameter can be specified. Either **periodCount** or **endTime** must be specified.                                                                                    |
-| endTime      | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Required. Note that the start date/time must be consistent with the **IntegrationPeriod** and greater than the **startTime**                                                                                    |
-| periodType   | halfHour, hour, day, week, month                                                                                           | Optional, default is halfHour.                                                                                                                                                                                  |
-| calibrated   | true or false                                                                                                              | If set to true any Calibration Readings associated with the register will be used to adjust the TotalValues. Optional, default is true                                                                          |
-| interpolated | true or false                                                                                                              | If set to true DCS will attempt to estimate values for any missing data. Optional, default is true                                                                                                              |
+| Name         | Value                                                                                                                      | Note                                                                                                                                                                                                         |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| id           | Id of the register or virtual meter in the form Rx or VMx where x corresponds to the register's or virtual meter's DCS ID. | Required.                                                                                                                                                                                                    |
+| format       | Specifies the format of the data that will be returned. The options are: standard                                          | Optional, default is _standard_. More options may be added in the future.                                                                                                                                    |
+| startTime    | Start date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z                                      | Optional. See not below. If included **startTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **startTime** must correspond to the start of a calendar week. |
+| periodCount  | The number of periods.                                                                                                     | Optional. See not below. .                                                                                                                                                                                   |
+| endTime      | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Optional. See not below. . If included **endTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **endTime** must correspond to the end of a calendar week.     |
+| periodType   | halfHour, hour, day, week, month                                                                                           | Optional, default is halfHour.                                                                                                                                                                               |
+| calibrated   | true or false                                                                                                              | If set to true any Calibration Readings associated with the register will be used to adjust the TotalValues. Optional, default is true                                                                       |
+| interpolated | true or false                                                                                                              | If set to true DCS will attempt to estimate values for any missing data. Optional, default is true                                                                                                           |
+
+> The timespan covered by the request can be specified by including any 2 of **startTime**, **endTime** or **periodCount**.
+
+E.g. the, assuming the periodType='day' the
+timespan from midnight on 1st of January 2000 to midnight on the 1st of February 2000 can be specified in either of the following 3 ways::
+
+```
+startTime: 2000-01-01T00:00:00Z
+endTime: 2000-02-01T00:00:00Z
+```
+
+```
+startTime: 2000-01-01T00:00:00Z
+periodCount: 31
+```
+
+```
+endTime: 2000-02-01T00:00:00Z
+periodCount: 31
+```
 
 ## Response
 
@@ -330,11 +350,11 @@ A single object that contains the following properties:
 
 | Property        | Value                                                 | Note                                                                                                                                                                                                                                        |
 | --------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| startTime       | Start of range                                        | Corresponds to the **dateTime** parameter in the request                                                                                                                                                                                    |
-| endTime         | End of range                                          | Corresponds to the **endTime** parameter in the request (or calculated from **startTime** and **periodCount**)                                                                                                                              |
+| startTime       | Start of range                                        | Corresponds to the start of the timespan as specified by the combination of **startTime**, **endTime**, **periodType** and **periodCount** parameters in the request.                                                                       |
+| endTime         | End of range                                          | Corresponds to the end of the timespan as specified by the combination of **startTime**, **endTime**, **periodType** and **periodCount** parameters in the request.                                                                         |
 | name            | The name of the name of the register or virtual meter | The register name will be the full register name, i.e. METER NAME: REGISTER NAME                                                                                                                                                            |
 | periodType      | halfHour, hour, day, week, month                      | Corresponds to the **periodType** parameter in the request                                                                                                                                                                                  |
-| unit            |                                                       |                                                                                                                                                                                                                                             |
+| unit            | The unit for each value, e.g. kWh                     |                                                                                                                                                                                                                                             |
 | readingDuration | The duration for each reading.                        | If the reading represents a meter total, or an instantaneous value this will be 0. If the reading represents consumption over time the duration will correspond to the periodType (this will normally only be the case for virtual meters). |
 | readings        | An array of reading objects. See table below          |
 
@@ -343,8 +363,8 @@ A **reading** object corresponds to a single reading and has the following prope
 | Property       | Value                                       | Note |
 | -------------- | ------------------------------------------- | ---- |
 | timestamp      | The UTC time corresponding to the reading.  |      |
-| value          | The value of the reading                    |
-| isInterpolated | Specifies if the value was estimated by DCS |
+| value          | The value of the reading                    |      |
+| isInterpolated | Specifies if the value was estimated by DCS |      |
 
 > If the **interpolated** query parameter was set to false readings that are unavailable in DCS will not be
 > present in the array and therefore the reading may not be contiguous.
