@@ -397,22 +397,22 @@ Content-Type: application/json; charset=utf-8
  "readings":
     [
       {
-        "isInterpolated":false,
+        "status":0,
         "timestamp":"2021-09-20T18:00:00Z",
         "value":9.04
       },
       {
-        "isInterpolated":true,
+        "status":1,
         "timestamp":"2021-09-20T18:30:00Z",
         "value":18.04
       },
       {
-        "isInterpolated":true,
+        "status":1,
         "timestamp":"2021-09-20T19:00:00Z",
         "value":43.08
       },
       {
-        "isInterpolated":false,
+        "status":0,
         "timestamp":"2021-09-20T19:30:00Z",
         "Value":59.0
       }
