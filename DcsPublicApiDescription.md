@@ -40,7 +40,7 @@ in the request body.
 ### Request
 
 ```
-POST /account/login
+POST /authenticate/signin
 ```
 
 ### JSON Parameters
@@ -59,7 +59,7 @@ token. The cookie name will start with COHERENT-DCS-API.
 ### Sample
 
 ```
-POST https://www.coherent-research.co.uk/DCSWebApi/account/login
+POST https://www.coherent-research.co.uk/DCSWebApi/authenticate/signin
 content-type: application/json
 
 {"username": "user", "password": "mypassword" }
@@ -109,6 +109,7 @@ All queries will use a HTTP GET request message and the parameters will be sent 
 
 ```
 GET URL?param1=value1&param2=value2
+Accept: application/json
 ```
 
 ## Response codes
@@ -309,16 +310,16 @@ GET metereddata?QUERYSTRING
 
 ## Query String Parameters
 
-| Name         | Value                                                                                                                      | Note                                                                                                                                                                                                                                                                                                                           |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| id           | Id of the register or virtual meter in the form Rx or VMx where x corresponds to the register's or virtual meter's DCS ID. | Required.                                                                                                                                                                                                                                                                                                                      |
-| format       | Specifies the format of the data that will be returned. The options are: standard                                          | Optional, default is _standard_. More options may be added in the future.                                                                                                                                                                                                                                                      |
-| startTime    | Start date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z                                      | Optional. See not below. If included **startTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **startTime** must correspond to the start of a calendar week.                                                                                                                   |
-| periodCount  | The number of periods.                                                                                                     | Optional. See not below. .                                                                                                                                                                                                                                                                                                     |
-| endTime      | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Optional. See not below. . If included **endTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **endTime** must correspond to the end of a calendar week.                                                                                                                       |
-| periodType   | halfHour, hour, day, week, month                                                                                           | Optional, default is halfHour.                                                                                                                                                                                                                                                                                                 |
-| calibrated   | true or false                                                                                                              | If set to true any Calibration Readings associated with the register will be used to adjust the TotalValues. Optional, default is true                                                                                                                                                                                         |
-| interpolated | true or false                                                                                                              | If set to false the returned data will only contain the readings that exist in DCS. If set to true DCS will attempt to estimate values for any missing data. If for any reason DCS is unable to interpolate the missing readings the returned data will only contain the readings that exist in DCS. Optional, default is true |
+| Name         | Value                                                                                                                      | Note                                                                                                                                                                                                                                                                                                                            |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id           | Id of the register or virtual meter in the form Rx or VMx where x corresponds to the register's or virtual meter's DCS ID. | Required.                                                                                                                                                                                                                                                                                                                       |
+| format       | Specifies the format of the data that will be returned. The options are: standard                                          | Optional, default is _standard_. More options may be added in the future.                                                                                                                                                                                                                                                       |
+| startTime    | Start date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z                                      | Optional. See not below. If included **startTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **startTime** must correspond to the start of a calendar week.                                                                                                                    |
+| periodCount  | The number of periods.                                                                                                     | Optional. See not below. .                                                                                                                                                                                                                                                                                                      |
+| endTime      | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Optional. See not below. . If included **endTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **endTime** must correspond to the end of a calendar week.                                                                                                                        |
+| periodType   | halfHour, hour, day, week, month                                                                                           | Optional, default is halfHour.                                                                                                                                                                                                                                                                                                  |
+| calibrated   | true or false                                                                                                              | If set to true any Calibration Readings associated with the register will be used to adjust the TotalValues. Optional, default is false                                                                                                                                                                                         |
+| interpolated | true or false                                                                                                              | If set to false the returned data will only contain the readings that exist in DCS. If set to true DCS will attempt to estimate values for any missing data. If for any reason DCS is unable to interpolate the missing readings the returned data will only contain the readings that exist in DCS. Optional, default is false |
 
 > The timespan covered by the request can be specified by including any 2 of **startTime**, **endTime** or **periodCount**.
 
