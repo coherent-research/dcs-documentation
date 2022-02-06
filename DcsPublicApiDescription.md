@@ -336,7 +336,7 @@ Returns an array of readings for the specified register or virtual meter and tim
 ## Request
 
 ```
-GET readings?QUERYSTRING
+GET /readings?QUERYSTRING
 ```
 
 ## Query String Parameters
@@ -347,7 +347,7 @@ GET readings?QUERYSTRING
 | format       | Specifies the format of the data that will be returned. The options are: standard                                          | Optional, default is _standard_. More options may be added in the future.                                                                                                                                                                                                                                                                                                                                                                                          |
 | startTime    | Start date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T22:30:00Z                                      | Optional. See not below. If included **startTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **startTime** must correspond to the start of a calendar week.                                                                                                                                                                                                                                                       |
 | periodCount  | The number of periods.                                                                                                     | Optional. See note below.                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| endTime      | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Optional. See not below. . If included **endTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **endTime** must correspond to the end of a calendar week.                                                                                                                                                                                                                                                           |
+| endTime      | End date/time as UTC in the format yyyy-MM-ddTHH:mm:ssZ, e.g. 2021-06-231T23:30:00Z                                        | Optional. See not below. If included **endTime** must be consistent with **periodType**, e.g. if the period type is set specified as _week_ **endTime** must correspond to the end of a calendar week.                                                                                                                                                                                                                                                           |
 | periodType   | halfHour, hour, day, week, month                                                                                           | Optional, default is halfHour. If the register or virtual meter is instantaneous the periodType can not be set to a value other than halfHour.                                                                                                                                                                                                                                                                                                                     |
 | calibrated   | true or false                                                                                                              | If set to true any Calibration Readings associated with the register will be used to adjust the TotalValues. Optional, default is false. Since calibration is not supported for instantaneous registers or virtual meters this parameter will be ignored in those cases.                                                                                                                                                                                           |
 | interpolated | true or false                                                                                                              | If set to false the returned data will only contain the readings that exist in DCS. If set to true DCS will attempt to estimate values for any missing data. If for any reason DCS is unable to interpolate the missing readings the returned data will only contain the readings that exist in DCS. Optional, default is false. Since interpolation is not supported for instantaneous registers or virtual meters this parameter will be ignored in those cases. |
@@ -410,7 +410,7 @@ The **status** is an integer that in made up of one or more of the following fla
 Authenticated mode, format = standard
 
 ```
-GET https://www.coherent-research.co.uk/DCSWebApi/metereddata?id=r100 ...
+GET https://www.coherent-research.co.uk/DCSWebApi/readings?id=r100 ...
        &startTime=2021-09-20T18:00:00Z&periodCount=4&periodType=halfHour
 Accept: application/json
 Cookie: COHERENT-DCS-API...
@@ -458,11 +458,25 @@ Rate limiting can be applied to the Authenticated and the Unauthenticated endpoi
 
 For each endpoint it is possible to specify the maximum number of requests per time period, e.g. 100 requests per minute, or 10 requests per second.
 
-When the rate is exceeded the request will be rejected with the HTTP status code 429. The following property contents of the response will contain a JSON object with the following properties
+If the request doesn't get rate limited then the rules are used to compose the X-Rate-Limit headers in the response:
 
-| Property          | Value                                                          | Note       |
-| ----------------- | -------------------------------------------------------------- | ---------- |
-| backOffSuggestion | A suggested period that the caller should wait before retrying | In seconds |
+```
+X-Rate-Limit-Limit: the rate limit period (eg. 1m, 12h, 1d)
+X-Rate-Limit-Remaining: number of request remaining 
+X-Rate-Limit-Reset: UTC date time (ISO 8601) when the limits resets
+```
+
+When the rate is exceeded the request will be rejected with the HTTP status code 429 along with a Retry-After header with a suggested period that the caller should wait before retrying expressed in seconds.
+
+```
+Retry-After : number of seconds to wait (eg. 3s)
+```
+
+The response body will contain a JSON object with the following properties
+
+| Property          | Value                                                                                              | Note       |
+| ----------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| backOffSuggestion | A suggested period that the caller should wait before retrying, the same as the Retry-After header | In seconds |
 
 > Rate limiting applies to an endpoint and not a client, in other words the rate limit applies to requests to an endpoint from **all** users.
 
