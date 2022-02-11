@@ -57,6 +57,8 @@ if desired and reset their password if they have forgotten it. When a
 password is reset a new one will be sent automatically to the email
 address registered for the user.
 
+Users may also use credentials from another authenticatin provider via a Single-Sign-On system if DCS were configured to do so. This could be instead of a user name and password from DCS, or even the use of both methods interchangeably.
+
 # Managing Meters and Virtual Meters
 
 ## Overview
@@ -225,14 +227,12 @@ Note that if all registers that are defined for the meter type have been created
 - Click the **Add new virtual meter** button at the top right hand of the virtual meter table which will display an empty virtual meter settings form.
 - Enter the fields according to the table below.
 - Press the **Save** button to confirm the creation of the virtual meter.
-
-| Field       | Description                                                                                                                                                                                              |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Name        | A human readable name for the Virtual Meter. It should be something concise and obvious, e.g. Main Building Electricity.                                                                                 |
-| Description | Any text to describe the Virtual Meter further.                                                                                                                                                          |
-| Expression  | The mathematical function to define the time series data. This is expressed as a mathematical function of meter registers. Each meter register will be specified as a register variable which can be any |
-
-alphanumeric string without spaces. See below for more details.
+                      
+Field | Description
+------|------------            
+Name | A human readable name for the Virtual Meter. It should be something concise and obvious, e.g. Main Building Electricity.
+Description | Any text to describe the Virtual Meter further.
+Expression | The mathematical function to define the time series data. This is expressed as a mathematical function of meter registers. Each meter register will be specified as a register variable which can be any alphanumeric string without spaces. See below for more details.
 Unit | The unit for the calculated data.
 Instantaneous | Specifies whether the virtual meter contains instantaneous quantity (e.g. W) or a cumulative quantity (e.g. Wh).
 Decimal places | The number of significant decimal places for the calculated data. The value can be any integer &gt;= 0.
@@ -246,7 +246,7 @@ Currently the expression can consist of the following:
 numerical constants, +, -, ., /, \*, (, ) and register variables and the ternary operator (see below). E.g.
 
 ```
-ELECT1+ELECT2)*1.5
+(ELECT1+ELECT2)*1.5 
 ```
 
 ```
@@ -259,13 +259,12 @@ The ternary operator allows for conditional processing of a reading and takes th
 
 ```text
 CONDITION ? VALUE_IF_TRUE : VALUE_IF_FALSE
-```
+```  
+where `CONDITION` must be a logical comparison such as `ELECT == 0 or ELECT >= 1` 
+and `VALUE_IF_TRUE` and `VALUE_IF_FALSE` are expressions resulting in numeric values.
 
-where CONDITION must be a logical comparison such as ELECT == 0 or ELECT >= 1
-and VALUE_IF_TRUE and VALUE_IF_FALSE are numeric values.
-
-The comparison operators are: == (equals), &gt; (greater than), &gt;= (greater than or equal to), &lt; (less than), &lt;= (less than or equal to).
-Logical operators can also be used in a CONDITION. The logical operators are &amp;&amp; (and) and || (or).
+The comparision operators are: == (equals), &gt; (greater than), &gt;= (greater than or equal to), &lt; (less than), &lt;= (less than or equal to).
+Logical operators can also be used in a `CONDITION`. The logical operators are &amp;&amp; (and) and || (or).
 
 Examples:
 
@@ -326,13 +325,13 @@ Metered data for meters and virtual meters can be viewed or downloaded in a vari
 
 There are a number of options that are used when displaying readings data that can be set in the **Options** panel
 
-| Field        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Chart/Table |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| Source       | Identifies the source of the metered data to be viewed. The source can be Automatic (i.e. the normal data collected automatically by DCS), Manual (i.e. the Interpolated data derived purely from Manual Readings) and Merged. When Merged is selected metered data consists of the Automatic metered data (calibrated) with any gaps filled in by linear interpolation OR the interpolated manual reading value which ever interpolation has the least uncertainty. On charts readings derived from either type of interpolated reading are shown with a pale green background. | Both        |
-| Calibrated   | This is only available when the Source is Automatic. When selected the metered data is shown with the totals adjusted using the Calibration Readings for the register. When not selected the readings are shown without the adjustment.                                                                                                                                                                                                                                                                                                                                          | Table       |
-| Interpolated | This is only available when the Source is Automatic. When selected any missing gaps in the metered data will be filled in using linear interpolation (on charts interpolated readings are shown with a pale green background). If not selected missing readings will not be displayed (on charts missing readings are shown with a pale red background).                                                                                                                                                                                                                         | Both        |
-| Time zone    | The readings are normally shown in Standard Time (i.e. GMT in the UK) but it is also possible to display the readings in local time (which takes into account BST).                                                                                                                                                                                                                                                                                                                                                                                                              | Both        |
-| Decimals     | The number of decimal places the readings will be rounded to when displayed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Table       |
+Field | Description
+------|------------
+Source | Identifies the source of the metered data to be viewed. The source can be Automatic (i.e. the normal data collected automatically by DCS), Manual (i.e. the Interpolated data derived purely from Manual Readings) and Merged. When Merged is selected metered data consists of the Automatic metered data (calibrated) with any gaps filled in by linear interpolation OR the interpolated manual reading value which ever interpolation has the least uncertainty. On charts readings derived from either type of interpolated reading are shown with a pale green background.
+Calibrated | This is only available when the Source is Automatic. When selected the metered data is shown with the totals adjusted using the Calibration Readings for the register. When not selected the readings are shown without the adjustment.
+Interpolated | This is only available when the Source is Automatic. When selected any missing gaps in the metered data will be filled in using linear interpolation (on charts interpolated readings are shown with a pale green background). If not selected missing readings will not be displayed (on charts missing readings are shown with a pale red background).
+Time zone | The readings are normally shown in Standard Time (i.e. GMT in the UK) but it is also possible to display the readings in local time (which takes into account BST).
+Decimals | The number of decimal places the readings will be rounded to when displayed (Only applicable to Tables)
 
 The data currently being displayed can always be refreshed from the server by clicking the **Refresh from server** button. This is useful if the data may have changed due to, e.g. the meter being read in the background.
 
@@ -729,38 +728,37 @@ The possible values for Meter Class are
 - Enter the fields according to the table below.
 - Click **Save** to confirm the creation of the calibration reading.
 
-| Field               | Description                                                                                                                                                                                                                                                                                                                         |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Name                | A human readable name for the Register Type.                                                                                                                                                                                                                                                                                        |
-| Address             | See below                                                                                                                                                                                                                                                                                                                           |
-| Metered data plugin | If the meter type corresponds to an intelligent meter then select the Metered Data Plugin from the drop down list (see the chapter on **Metered Data Plugins** for more information on supported plugins.) If the meter type corresponds to an IDC pulse input, radio input and Modbus meter this field should be left as **None**. |
-| Scale factor        | A number which every reading will be multiplied by before it is stored in the database.                                                                                                                                                                                                                                             |
-| Unit                | Unit for the readings.                                                                                                                                                                                                                                                                                                              |
-| Is instantaneous    | Specifies whether the register is recording an instantaneous quantity (e.g. W) or a cumulative quantity (e.g. Wh).                                                                                                                                                                                                                  |
+Field | Description
+------|------------ 
+Name | A human readable name for the Register Type. 
+Address | See below
+Metered data plugin | If the meter type corresponds to an intelligent meter then select the Metered Data Plugin from the drop down list (see the chapter on **Metered Data Plugins** for more information on supported plugins.) If the meter type corresponds to an IDC pulse input, radio input and Modbus meter this field should be left as **None**.
+Scale factor | A number which every reading will be multiplied by before it is stored in the database.
+Unit | Unit for the readings.
+Is instantaneous | Specifies whether the register is recording an instantaneous quantity (e.g. W) or a cumulative quantity (e.g. KWh).
+
+> An instantaneous Register will store values recorded at the given time (e.g. W), while a non-instantaneous or standard Register will assume this is a cumulative quantity (e.g. KWh) and also give a "Period Value" being the difference between this reading and the next representing the accumulated total for the given period.
 
 **Address format for IDC Inputs:**
 
 - Pulse Input: The address is always 0
 - For Radio Inputs: The address is always 0
-- For Modbus meters: The address is made up as follows: R-T-L-E where R is the Modbus register address (see relevant meter documentation), T is the
-  type of register which can be 3 for a Holding Register or 4 for an Input Register, L is the length in 16 bit words (valid values are 1, 2, 3 and 4 for 16, 32, 48 and 64 bit quantities), and E is the encoding which
-  is shown below. Note that not all combinations of length and encoding are supported. Refer to the relevant meter documentation for register formats.
+- For Modbus meters: The address is the Modbus register address and these additional parameters must be configured (see relevant meter documentation):
+ - The type of register which can be Holding Register or an Input Register
+  - The length in 16 bit words (valid values are 16, 32, 48 and 64 bit word sizes)
+  - The encoding which is shown below. Note that not all combinations of length and encoding are supported. Refer to the relevant meter documentation for register formats.
 - For meters that use a plugin, the address is used by the Meter Plugin to address the register within the meter and its meaning is specific to the plugin.
-
+ 
 **Modbus register encoding**
 
-- 0: Unsigned int
-- 1: Signed int (2s complement)
-- 2: Signed int (sign/magnitude)
-- 3: Floating Point (32 bit only)
-- 4: Unsigned int - Little endian (&gt;= 32 bits only)
-- 5: Signed int (2s complement) - Little endian (&gt;= 32 bits only)
-- 6: Signed int (sign/magnitude) - Little endian (&gt;= 32 bits only)
-- 7: Floating Point - Little endian (32 bit only)
-- 8: Unsigned integer (Modulo-10000): Little endian
-- 9: Unsigned integer (Modulo-10000): Big endian
-- 10: Unsigned integer (YST format)
-
+- Unsigned integer: Big/Little endian
+- Unsigned integer (Modulo-10000): Big/Little endian
+- Unsigned integer (YST format)
+- Signed integer (2s complement): Big/Little endian
+- Signed integer (sign/magnitude): Big/Little endian
+- Floating Point to IEEE 754 (32 bit only): Big/Little endian
+- Binary-coded decimal (BCD)
+        
 ## Removing a Register Type from a Meter Type
 
 - Delete a register type by using the action menu on the right of the table row and clicking **Delete register type**.
@@ -797,10 +795,10 @@ It is possible to partition IDCs logically into a hierarchy of groups in exactly
 IDCs are automatically added to DCS when they first connect. One IDC Group will be defined as the default group and IDCs will automatically be assigned to that group (see [Managing IDC Groups](#managing-idcs-managing-idc-groups)).
 
 ## Viewing IDC status
-
-- Select the IDC and open the **\*Device Info** tab. This will show information about the IDC device and its current status.
-- The status can be updated by clicking the **Refresh** button.
-
+- Select the IDC and open the **Device Info** tab. This will show information about the IDC device and its current status. 
+- The status can be updated by clicking the  **Refresh** button.
+- The user may store information as Notes which, when added or edited, can be saved with the **Save** button. These notes do not effect the use of the IDCs in any way and can be modified even if the IDC is offline.
+        
 ## Reading the IDC settings
 
 It is possible to read the settings stored in the IDC device itself and modify these if required.
@@ -814,31 +812,31 @@ It is possible to read the settings stored in the IDC device itself and modify t
 - Read the IDC **Settings** and modify them as required according to the table below.
 - Click the **Write to IDC** button to write the settings back to the remote device.
 
-> Note that this result in the IDC device being reset. This sets up a communications session with the remote device to read the settings and may take a few seconds. Also, be aware that if there is already a session in progress to the IDC to, e.g., read a meter it will not be possible to read the settings.
-
-| Field                  | Description                                                                                                                                                                                                                                                                                            |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Name                   | A descriptive name for the IDC. This is for the administrator's benefit only. Maximum 20 characters.                                                                                                                                                                                                   |
-| Server address         | The address of DCSWebServices. This can either be a fully qualified domain name such as www.coherent-research.co.uk or an IP address. Only used if the TCP listening port is set to 0.                                                                                                                 |
-| Server port            | The HTTP listening port for DCSWebServices (normally 80).                                                                                                                                                                                                                                              |
-| Service directory      | The directory that forms the complete URL of the DCS endpoint. This will normally be IdcWebServices.                                                                                                                                                                                                   |
-| DHCP                   | Determines if DHCP is used to obtain network settings.                                                                                                                                                                                                                                                 |
-| IP Address             | The static IP address of the IDC (only valid if DHCP is No).                                                                                                                                                                                                                                           |
-| Gateway address        | The gateway IP address (only valid if DHCP is No).                                                                                                                                                                                                                                                     |
-| Netmask                | The subnet mask for the IDC (only valid if DHCP is No).                                                                                                                                                                                                                                                |
-| DNS address            | The IP address of the DNS server (only valid if DHCP is No).                                                                                                                                                                                                                                           |
-| Proxy                  | Determines if a HTTP proxy server should be used for connections to DCS.                                                                                                                                                                                                                               |
-| Proxy server address   | The IP address for the proxy server (only valid if Proxy is Yes).                                                                                                                                                                                                                                      |
-| Proxy server port      | The listening port for the proxy server (only valid if Proxy is Yes).                                                                                                                                                                                                                                  |
-| Modbus serial settings | The serial port settings for the external Modbus port when communicating with Modbus devices in the form "b, dps" where b is the baud rate, d is the number of databits (7, 8), p is the parity (O, E, N) and s is the number of stop bits (1, 2). E.g. 1200, 7E1.                                     |
-| Delay1                 | Time delay (in ms) inserted between receiving a Modbus message from a Modbus address and sending to the same address. 0-10000, default 0.                                                                                                                                                              |
-| Delay2                 | Time delay (in ms) inserted between receiving a Modbus message from a Modbus address and sending to another address. 0-10000, default 0.                                                                                                                                                               |
-| Delay3                 | An extra duration, in milliseconds, added to the timeout used by the IDC when polling Modbus meters. Normally this value can be zero as the IDC will use an appropriate timeout. However, for some meters that are slow to process Modbus requests an extra duration can be added. 0-10000, default 0. |
-| Modbus retries         | The number of times the IDC will retry to read a Modbus meter. 0-10, default 0.                                                                                                                                                                                                                        |
-| Modbus/TCP port        | If specified the IDC will act as a Modbus over TCP/IP gateway. Default 0. If zero the feature is disabled. The normal value when the feature is used in 502.                                                                                                                                           |
-| Trace On               | Turn on/off UDP tracing for the IDC.                                                                                                                                                                                                                                                                   |
-| Trace Server Address   | The address for the Trace Server. This can either be a fully qualified domain name such as www.coherent-research.co.uk or an IP address.                                                                                                                                                               |
-| Trace Server Port      | The UDP listening port for the Trace Server.                                                                                                                                                                                                                                                           |
+> Note that this result in the IDC device being rebooted. This sets up a communications session with the remote device to read the settings and may take a few seconds. Also, be aware that if there is already a session in progress to the IDC to, e.g., read a meter it will not be possible to read or write the settings until this is completed.
+        
+Field | Description
+------|------------ 
+Name | A descriptive name for the IDC. This is for the administrator's benefit only. Maximum 20 characters.
+Server address | The address of DCSWebServices. This can either be a fully qualified domain name such as www.coherent-research.co.uk or an IP address. Only used if the TCP listening port is set to 0.
+Server port | The HTTP listening port for DCSWebServices (normally 80). 
+Service directory | The directory that forms the complete URL of the DCS endpoint. This will normally be IdcWebServices.
+DHCP | Determines if DHCP is used to obtain network settings.
+IP Address | The static IP address of the IDC (only valid if DHCP is No).
+Gateway address | The gateway IP address  (only valid if DHCP is No).
+Netmask | The subnet mask for the IDC  (only valid if DHCP is No).
+DNS address | The IP address of the DNS server (only valid if DHCP is No).
+Proxy | Determines if a HTTP proxy server should be used for connections to DCS.
+Proxy server address | The IP address for the proxy server (only valid if Proxy  is Yes).
+Proxy server port | The listening  port for the proxy server (only valid if Proxy  is Yes).        
+Modbus serial settings | The serial port settings for the external Modbus port when communicating with Modbus devices in the form "b, dps" where b is the baud rate, d is the number of databits (7, 8), p is the parity (O, E, N) and s is the number of stop bits (1, 2). E.g. 1200, 7E1.
+Delay1 | Time delay (in ms) inserted between receiving a modbus message from a modbus address and sending to the same address. 0-10000, default 0.
+Delay2 | Time delay (in ms) inserted between receiving a modbus message from a modbus address and sending to another address. 0-10000, default 0.
+Delay3 | An extra duration, in milliseconds, added to the timeout used by the IDC when polling modbus meters. Normally this value can be zero as the IDC will use an appropriate timeout. However, for some meters that are slow to process Modbus requests an extra duration can be added. 0-10000, default 0.
+Modbus retries | The number of times the IDC will retry to read a Modbus meter. 0-10, default 0.
+Modbus/TCP port | If specified the IDC will act as a Modbus over TCP/IP gateway. Default 0. If zero the feature is disabled. The normal value when the feature is used in 502.
+Trace On | Turn on/off UDP tracing for the IDC.
+Trace Server Address | The address for the Trace Server. This can either be a fully qualified domain name such as www.coherent-research.co.uk or an IP address.
+Trace Server Port | The UDP listening port for the Trace Server.
 
 > Note that it is possible to change all IDC settings via DCS, including
 > those which determine how the IDC connects to DCS, so care must be
@@ -1013,14 +1011,14 @@ When one or more interrogations are queued they will be added to the list and DC
 
 A number of application settings can be used to modify the behaviour of the Queued Interrogation function in the DCService.exe.config file:
 
-| Setting name                           | Meaning                                                                           | Default value |
-| -------------------------------------- | --------------------------------------------------------------------------------- | ------------- |
-| QueuedInterrogationDialupMaxRetryCount | Number of retries that will be attempted if a dial up queued interrogation fails. | 2             |
-| QueuedInterrogationTcpMaxRetryCount    | Number of retries that will be attempted if a TCP/IP queued interrogation fails.  | 2             |
-| QueuedInterrogationIdcMaxRetryCount    | Number of retries that will be attempted if an IDC queued interrogation fails.    | 2             |
-| QueuedInterrogationDialupRetryGaps_s   | The minimum gap in seconds between retries for dialup queued interrogations       | 30            |
-| QueuedInterrogationTcpRetryGaps_s      | The minimum gap in seconds between retries for TCP/IP queued interrogations       | 30            |
-| QueuedInterrogationIdcRetryGaps_s      | The minimum gap in seconds between retries for IDC queued interrogations          | 30            |
+Setting name | Meaning | Default value 
+--|--|--|--
+QueuedInterrogationDialupMaxRetryCount | Number of retries that will be attempted if a dial up queued interrogation fails. | 2 
+QueuedInterrogationTcpMaxRetryCount | Number of retries that will be attempted if a TCP/IP queued interrogation fails. | 2 
+QueuedInterrogationIdcMaxRetryCount | Number of retries that will be attempted if an IDC queued interrogation fails. | 2 
+QueuedInterrogationDialupRetryGaps_s | The minimum gap in seconds between retries for dialup queued interrogations | 30 
+QueuedInterrogationTcpRetryGaps_s | The minimum gap in seconds between retries for TCP/IP queued interrogations | 30 
+QueuedInterrogationIdcRetryGaps_s | The minimum gap in seconds between retries for IDC queued interrogations | 30 
 
 See the installation guide for details about modifying application settings.
 
@@ -1079,12 +1077,12 @@ A tariff is used to determine how to calculate the cost associated with a set of
 
 **Tariff band definition**
 
-| Field       | Description                                                                                                                             |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Name        | A short human readable name, e.g. Day or Night.                                                                                         |
-| Start time  | The time of day (GMT) the band starts in the format HH:MM (in 24hr time).                                                               |
-| Unit cost   | The cost (in pounds and pence) per unit.                                                                                                |
-| Day of week | The days of the week the tariff is valid for. This can be used to have, e.g., different tariffs on the weekends as opposed to weekdays. |
+Field | Description
+------|------------ 
+Name |  A short human readable name, e.g. Day or Night.
+Start time | The time of day (GMT) the band starts in the format HH:MM (in 24hr time).
+Unit cost | The cost (in pounds and pence) per unit.
+Day of week | The days of the week the tariff is valid for. This can be used to have, e.g., different tariffs on the weekends as opposed to weekdays.
 
 > Note that the end time for a tariff time band is always considered the start of the next time band (in start time order). This means that no 2 tariff time bands can have the same start time. The cost per unit can be in fractions of pence, e.g. if a supplier charges 12.34 p/kWh this can be enterd as 0.1234. Tariff time band names do not need to be unique within a tariff. Repeated time bands will be aggregated when creating the billing data. This allows rates to be split during the day.
 
@@ -1223,14 +1221,12 @@ All meter registers and virtual meters can have a unit specified. In DCS a unit 
 
 ## User Roles
 
-A user has an associated role: guest, viewer, operator or administrator.
-
-| Role          | Capabilities                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Usage                                                                                                                            |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Administrator | Administrator are permitted to perform all tasks in DCS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Limit the number of Administrators to a small number of trusted, capable users.                                                  |
-| Operators     | An operator can create, edit and delete meters, virtual meters or groups and manage IDCs unless they are restricted to certain groups by an administrator (see [Meter Restriction Profiles](#managing-users-meter-restriction-profiles) and [IDC Restriction Profiles](#managing-users-idc-restriction-profiles)). An operator may view Meter Types but not create, delete or modify them. They may not view the **Admins** page. They may also view and create their own reports and view all public reports.                                                                                                                                                                         | This role is designed for users who will use all aspects of the system be may be restricted to certain groups of meters or IDCs. |
-| Viewer        | The viewer may view virtually all parts of the system but they have strictly read only access. Viewers can not create, edit and delete meters, virtual meters or groups. Viewers can be restricted to certain groups by an administrator (see [Meter Restriction Profiles](#managing-users-meter-restriction-profiles) and [IDC Restriction Profiles](#managing-users-idc-restriction-profiles)). Viewer may view but not edit Meter Types, IDCs and Administration functions with the exception of the Users table. They may also view and create their own reports and view all public reports.                                                                                      | This role is usually just used for demonstration purposes.                                                                       |
-| Guest         | Guests are essentially only allowed to view Metered Data. They can view any of the groups, meters (meter passwords and remote addresses will be hidden) or virtual meters unless they are restricted to certain groups by an administrator (see [Meter Restriction Profiles](#managing-users-meter-restriction-profiles) and [IDC Restriction Profiles](#managing-users-idc-restriction-profiles)); however they may not create, modify or delete any of them. They may not interrogate meters or import any data. They can not interact with IDCs, view the event log or access any administrative functions. They may view and create their own reports and view all public reports. | Use this role if the user needs to be restricted to a subset of meters and should only be authorised to view Metered Data        |
+Role | Capabilities | Usage
+-----|--------------|------
+Administrator | Adminstrator are permitted to perform all tasks in DCS | Limit the number of Administrators to a small number of trusted, capable users.
+Operators | An operator can create, edit and delete meters, virtual meters or groups and manage IDCs unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). An operator may view Meter Types but not create, delete or modify them. They may not view the **Admins** page. They may also view and create their own reports and view all public reports. | This role is designed for users who will use all aspects of the system be may be restricted to certain groups of meters or IDCs.
+Viewer | The viewer may view virtually all parts of the system but they have stricly read only access. Viewers can not create, edit and delete meters, virtual meters or groups. Viewers can be restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). Viewer may view but not edit Meter Types, IDCs and Administration functions with the exception of the Users table. They may also view and create their own reports and view all public reports. | This role is usually just used for demonstation purposes.
+Guest | Guests are essentially only allowed to view Metered Data. They can view any of the groups, meters (meter passwords and remote addresses will be hidden) or virtual meters unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)); however they may not create, modify or delete any of them. They may not interrogate meters or import any data. They can not interact with IDCs, view the event log or access any administrative funtions. They may view and create their own reports and view all public reports. | Use this role if the user needs to be restricted to a subset of meters and should only be authorised to view Metered Data  
 
 ## Viewing users
 
@@ -1238,20 +1234,18 @@ A user has an associated role: guest, viewer, operator or administrator.
 
 ## Adding a User
 
-- Click the **Add new user** button at the top right hand of the user table which will display an empty user settings form.
-- Enter the fields according to the table below.
-- Click **Save**.
-
-| Field                     | Description                                                                                                                                                                                  |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| User name                 | A unique string which may only be made up of the following characters: a..z, A..Z, 0..9, -, ., \_, @, +, and _SPACE_.                                                                        |
-| Role                      | Administrator, Operator, Viewer, Guest                                                                                                                                                       |
-| Email                     | The user's email address                                                                                                                                                                     |
-| Expiration                | An optional future date that can be used to specify an expiration date for the account. Once this date has passed the user will not be able to sign in. Normally this field should be empty. |
-| Data access start         | An optional date that can be used to specify the start of a date range for which the user can view metered data. Normally this field should be empty.                                        |
-| Data access start         | An optional date that can be used to specify the end of a date range for which the user can view metered data. Normally this field should be empty.                                          |
-| Meter restriction profile | An optional profile that can be applied to the user to restrict them to a subset of meter groups                                                                                             |
-| IDC restriction profile   | An optional profile that can be applied to the user to restrict them to a subset of IDC groups                                                                                               |
+Field | Description
+------|------------ 
+User name | A unique string which may only be made up of the following characters: a..z, A..Z, 0..9, -, ., _, @, +, and *SPACE*.
+Role | Administrator, Operator, Viewer, Guest
+Email | The user's email address
+SSO Identity | Optional field for the user's fully qualified identity on the external Single-Sign-On provider if available.
+Enforce SSO | If an SSO Identity is provided, ticking this box will cause DCS to exclusively use this method to authenticate the user, i.e. the user must use SSO to login and will not be able to use a user name and password from DCS.
+Expiration | An optional future date that can be used to specify an expiration date for the account. Once this date has passed the user will not be able to sign in. Normally this field should be empty.
+Data access start | An optional date that can be used to specify the start of a date range for which the user can view metered data. Normally this field should be empty.
+Data access start | An optional date that can be used to specify the end of a date range for which the user can view metered data. Normally this field should be empty.
+Meter restriction profile | An optional profile that can be applied to the user to restrict them to a subset of meter groups
+IDC restriction profile | An optional profile that can be applied to the user to restrict them to a subset of IDC groups
 
 ## Modifying a User
 
@@ -1266,21 +1260,19 @@ A user has an associated role: guest, viewer, operator or administrator.
 
 ## Meter Restriction Profiles
 
-It is possible for users (except administrators) to be given a Meter Restriction Profile. This profiles specifies which subset of meter groups that the user may access. A Meter Restriction Profile can be applied to any number of users.
+A Meter Restiction Profile is a nested list of Denied/Granted Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
 
-A Meter Restriction Profile is a nested Granted/Denied list of Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
+** Example 1: A set of users is only granted access meters in a given group **
 
-** Example 1: A set of users is only allowed to access meters in a given group **
+A Meter Restriction Profile can be created which has the default access set to **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that user will only be able to access this granted group.
 
-A Meter Restriction Profile can be created which has the default access set to **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that the users will only be able to access this group.
+** Example 2: A set of users is granted access all meters except those in a given group **
 
-** Example 2: A set of users is allowed to access all meters except those in a given group **
+A Meter Restriction Profile can be created which has the default access set to **Granted** which means they can access any groups by default. A meter group can then be added which has the access set to **Denied**. This will mean that user will be able to access all groups except this denied group.
 
-A Meter Restriction Profile can be created which has the default access set to **Granted** which means they can access any groups by default. A meter group can then be added which has the access set to **Denied**. This will mean that user will be able to access all groups except this group.
+** Example 3: A set of uers is only granted access meters in a given group, except a certain meter **
 
-** Example 3: A set of users is only allowed to access meters in a given group, except a certain meter **
-
-A Meter Restriction Profile can be created which has the default access set to **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that the users will only be able to access this group. To restrict access to a certain meter this can be added with its access set to **Denied**.
+A Meter Restriction Profile can be created which has the default access set to **Denied** which means they can not access any groups by default. A meter group can then be added which has the access set to **Granted**. This will mean that user will only be able to access this granted group. To restrict access to a certain meter this can be added with its access set to **Denied**.
 
 ### Viewing Meter Restriction Profiles
 
@@ -1293,11 +1285,11 @@ A Meter Restriction Profile can be created which has the default access set to *
 - To add new meter group, meters and/or virtual meters to the profile click the **Add profile item** button and set the access as required.
 - Click **Save**.
 
-| Field          | Description                                                                                                                                                                                                  |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Name           | A string for the user to refer to the profile. It does not have any significance to the system.                                                                                                              |
-| Default access | Specifies whether the default profile access is **Granted** (i.e. by default a user with this profile can access everything) or **Denied** (i.e. by default a user with this profile cannot access anything) |
-| User default   | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.                                         |
+Field | Description
+------|------------ 
+Name |  A string for the user to refer to the profile. It does not have any significance to the system.
+Default access | Specifies whether the default profile access is **Granted** (i.e. by default a user with this profile can access everything) or **Denied** (i.e. by default a user with this profile cannot access anything)
+User default | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.
 
 ### Modifying Meter Restriction Profiles
 
@@ -1311,17 +1303,15 @@ A Meter Restriction Profile can be created which has the default access set to *
 
 ## IDC Restriction Profiles
 
-It is possible for users (except administrators) to be given a IDC Restriction Profile. This profiles specifies which subset of IDC groups that the user may access. A IDC Restriction Profile can be applied to any number of users.
+A IDC Restiction Profile is a nested list of Denied/Granted IDC Groups. A few examples best illustrates the use of a restriction profiles.
 
-An IDC Restriction Profile is a nested Granted/Denied list of IDC Groups. A few examples best illustrates the use of a restriction profiles.
+** Example 1: A set of users is only granted access IDCs in a given group **
 
-** Example 1: A set of users is only allowed to access IDCs in a given group **
+A IDC Restriction Profile can be created which has the default access set to  **Denied** which means they can not access any groups by default. A IDC group can then be added which has the access set to **Granted**. This will mean that user will only be able to access this granted group.
 
-A IDC Restriction Profile can be created which has the default access set to **Denied** which means they can not access any groups by default. A IDC group can then be added which has the access set to **Granted**. This will mean the user will only be able to access this group.
+** Example 2: A set of users is granted access all IDCs except those in a given group **
 
-** Example 2: A set of users is allowed to access all IDCs except those in a given group **
-
-A IDC Restriction Profile can be created which has the default access set to **Granted** which means they can access any groups by default. A IDC group can then be added which has the access set to **Denied**. This will mean the users will be able to access all groups except this group.
+A IDC Restriction Profile can be created which has the default access set to  **Granted** which means they can access any groups by default. A IDC group can then be added which has the access set to **Denied**. This will mean that user will be able to access all groups except this denied group.
 
 ### Viewing IDC Restriction Profiles
 
@@ -1334,11 +1324,11 @@ A IDC Restriction Profile can be created which has the default access set to **G
 - To add new IDC group to the profile click the **Add profile item** button and set the access as required.
 - Click **Save**.
 
-| Field          | Description                                                                                                                                                                                                  |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Name           | A string for the user to refer to the profile. It does not have any significance to the system.                                                                                                              |
-| Default access | Specifies whether the default profile access is **Granted** (i.e. by default a user with this profile can access everything) or **Denied** (i.e. by default a user with this profile cannot access anything) |
-| User default   | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.                                         |
+Field | Description
+------|------------ 
+Name |  A string for the user to refer to the profile. It does not have any significance to the system.
+Default access | Specifies whether the default profile access is **Granted** (i.e. by default a user with this profile can access everything) or **Denied** (i.e. by default a user with this profile cannot access anything)
+User default | If selected new users (except Administrators) will be given this profile automatically when the account is created. At most only one profile can have this selected.
 
 ### Modifying IDC Restriction Profiles
 
@@ -2182,35 +2172,35 @@ N { DAY[S] | WEEK[S] | MONTH[S} | YEAR[S] }
 
 Examples of using StartDate, EndDate and Span:
 
-|     | A                              | B       | C         |
-| --- | ------------------------------ | ------- | --------- | -------------------------------------------------------------- |
-| 1   | StartDate                      | Span    | EndDate   | Corresponding date range                                       |
-| 2   | YESTERDAY                      | 1 DAY   |           | Yesterday                                                      |
-| 3   | LAST WEEK                      | 7 DAYS  |           | Previous week from Monday to Sunday inclusive                  |
-| 4   | LAST WEEK + 2 DAYS             | 3 DAYS  |           | Previous week Wednesday, Thursday and Friday only              |
-| 5   | THIS YEAR                      |         | YESTERDAY | From the 1st of January until the end of yesterday             |
-| 6   | LAST YEAR + 7 MONTHS + 10 DAYS |         | YESTERDAY | From the 11th of August last year until the end of yesterday   |
-| 7   |                                | 21 DAYS | YESTERDAY | The last 21 days up to the end of yesterday                    |
-| 8   | 01/01/2001                     |         | THIS YEAR | From the 1st of January 2001 until the end of the current year |
+|   | A | B | C | Meaning 
+|---|---|---|---|---
+| 1 | StartDate | Span | EndDate | Corresponding date range
+| 2 | YESTERDAY | 1 DAY | | Yesterday
+| 3 | LAST WEEK | 7 DAYS | | Previous week from Monday to Sunday inclusive
+| 4 | LAST WEEK + 2 DAYS | 3 DAYS | | Previous week Wednesday, Thursday and Friday only
+| 5 | THIS YEAR | | YESTERDAY | From the 1st of January until the end of yesterday
+| 6 | LAST YEAR + 7 MONTHS + 10 DAYS | | YESTERDAY | From the 11th of August last year until the end of yesterday
+| 7 |  | 21 DAYS | YESTERDAY | The last 21 days up to the end of yesterday
+| 8 | 01/01/2001 | | THIS YEAR | From the 1st of January 2001 until the end of the current year
 
-The _List_ format of the metered data will be as follows:
+The *List* format of the metered data will be as follows:
 
-| Column      | Description                                                                                           |
-| ----------- | ----------------------------------------------------------------------------------------------------- |
-| Source      | The source from the configuration sheet.                                                              |
-| StartTime   | The start time of the reading period.                                                                 |
-| Duration    | The duration (in minutes) of the reading period.                                                      |
-| PeriodValue | The reading value for the period.                                                                     |
-| TotalValue  | The total value at the beginning of the period. If the reading is for a virtual meter this will be 0. |
+Column | Description        
+-------|------------
+Source | The source from the configuration sheet.
+StartTime | The start time of the reading period.
+Duration | The duration (in minutes) of the reading period.
+PeriodValue | The reading value for the period.
+TotalValue | The total value at the beginning of the period. If the reading is for a virtual meter this will be 0.
 
-The _Wide_ format of the metered data will be as follows:
+The *Wide* format of the metered data will be as follows:
 
-| Column      | Description                                                                                        |
-| ----------- | -------------------------------------------------------------------------------------------------- |
-| Source      | The source from the configuration sheet.                                                           |
-| Date        | The date for all readings in the row.                                                              |
-| Total       | The total value at the beginning of the day. If the reading is for a virtual meter this will be 0. |
-| Time of day | A separate column for each period in the form HH:mm, i.e. columnds 00:00, 00:30, 01:00 ... 23:30   |
+Column | Description        
+-------|------------
+Source | The source from the configuration sheet.
+Date | The date for all readings in the row.
+Total | The total value at the beginning of the day. If the reading is for a virtual meter this will be 0.
+Time of day | A separate column for each period in the form HH:mm, i.e. columnds 00:00, 00:30, 01:00 ... 23:30        
 
 ## Generation Reading Charts Report
 
