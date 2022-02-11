@@ -395,7 +395,7 @@ A **reading** object corresponds to a single reading and has the following prope
 | Property  | Value                                               | Note      |
 | --------- | --------------------------------------------------- | --------- |
 | timestamp | The UTC time corresponding to the reading.          |           |
-| value     | The value of the reading                            |           |
+| value     | The value of the reading                            | This will be a floating point number however it can potentially include a "NaN", "Infinity", or "-Infinity" string where relevant  |
 | status    | A set of flags indicating the status of the reading | See below |
 
 The **status** is an integer that in made up of one or more of the following flags logically ORed together. If no flags are present the status parameter will be 0.
