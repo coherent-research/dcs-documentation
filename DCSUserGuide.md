@@ -2111,6 +2111,16 @@ The report can be run daily, weekly or monthly and it will included daily usage 
 
 Note that Meters, Virtual Meters and Groups are ignored by this report.
 
+## Daily and Overall Usage Report
+
+The Daily and Overall Usage Report will show the daily total usage (i.e. the sum of all period values) for any included registers or virtual meters and the overall usage by register/virtual meter for the report's duration.
+
+The report can be run daily, weekly or monthly and it will included daily usage totals for each day in the reporting period. The start day of the week or month can be set to any arbitrary day.
+
+All data in the report is also included in an attached Excel spreadsheet.
+
+Note that Meters and Groups are ignored by this report.
+
 ## End of Period Totals Report
 
 The End of Period Totals Report produces a table of total register values at the end of the reporting period for each included register.
