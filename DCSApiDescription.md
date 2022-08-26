@@ -1,4 +1,4 @@
-> DEPRECATED. See (replacement)[DcsPublicApiDescription.md}
+> DEPRECATED. See (replacement)[DcsPublicApiDescription.md]
 
 # Introduction
 
