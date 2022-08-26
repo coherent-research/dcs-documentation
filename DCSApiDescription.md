@@ -1,3 +1,5 @@
+> DEPRECATED. See (replacement)[DcsPublicApiDescription.md}
+
 # Introduction
 
 DCS has been designed to integrate seamlessly with other systems.
@@ -12,8 +14,8 @@ metered data that has been collected by DCS.
 All calls to the Web API require an authentication token to be
 sent in a cookie as part of the HTTP request.
 
-In order to obtain an authenication token the client must send a 
-POST message providing valid DCS credentials to the server as a JSON object 
+In order to obtain an authenication token the client must send a
+POST message providing valid DCS credentials to the server as a JSON object
 in the request body.
 
 > **Note that all credentials and tokens are parsed between the server and client as JSON text strings, therefore the use of HTTPS rather than plain HTTP is strongly recommended for all transactions.**
@@ -26,10 +28,10 @@ POST /api/Account/login
 
 ### JSON Parameters
 
-Name       | Value 
------------|-------
-username   | DCS username
-password   | DCS password
+| Name     | Value        |
+| -------- | ------------ |
+| username | DCS username |
+| password | DCS password |
 
 If the credentials are correct the server will respond with
 response code 200 and a cookie containing an authentication
