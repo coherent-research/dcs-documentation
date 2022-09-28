@@ -2241,7 +2241,11 @@ An example would be:
 
 The Historical Average Report compares the average daily consumption for a current date window with that of an historical date windows and highlights if the difference is within specified limits.
 
-The input for the report must be specified in a Microsoft Office 2007 (or later) Excel file which can be uploaded when editing a report. The file must be of type "xlsx" and have the following format:
+The input for the report must be specified in a Microsoft Office 2007 (or later) Excel file which can be uploaded when editing a report.
+
+> Note that it is important that no cell styles are added to the input spreadsheet as this may result in DCS having problems parsing it.
+
+The file must be of type "xlsx" and have the following format:
 
 | Column          | Position | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | --------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
