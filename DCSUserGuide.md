@@ -899,7 +899,7 @@ check the connection immediately. DCS provides the ability to send a message to 
 
 ### Setting up a Modbus Device
 
-When a managed modbus device is first connected to the system its Modbus address and serial settings can be
+When a managed Modbus device is first connected to the system its Modbus address and serial settings can be
 automatically set from DCS. This can be done without knowing the current address or serial settings of the device but it does require that the serial number is known.
 DCS will set the device to the address specified when the Modbus devices was added to DCS and the serial settings to those defined for the Modbus in the IDC.
 
@@ -1031,29 +1031,6 @@ See the installation guide for details about modifying application settings.
 - If multiple queued interrogations are requested to the same remote address/IDC individually DCS will not try and combine these requests
   into a single connection. Since multiple queued interrogations are performed simultaneously this may mean that some of the interrogations will fail because a connection can not be established.
 
-## Prerequisites
-
-The Queued Interrogations functionality requires the following modification to the DCService.exe.config file:
-
-```xml
- <system.runtime.remoting>
-    <application name="DCService">
-      <service>
-        <wellknown type="Coherent.DCS.RemoteInterface.RemoteMeterReader, RemoteMeterReader"
-		           objectUri="Coherent.DCS.RemoteInterface.RemoteMeterReader" mode="Singleton" />
-        <wellknown type="Coherent.DCS.RemoteInterface.RemoteConfigurer, RemoteMeterReader"
-		           objectUri="Coherent.DCS.RemoteInterface.RemoteConfigurer" mode="Singleton" />
-        <wellknown type="Coherent.DCS.RemoteInterface.RemoteRealTimeMeterReader, RemoteMeterReader"
-		           objectUri="Coherent.DCS.RemoteInterface.RemoteRealTimeMeterReader" mode="Singleton" />
-		<!-- New line below -->
-        <wellknown type="Coherent.DCS.RemoteInterface.RemoteInterrogationQueuer, RemoteMeterReader"
-		           objectUri="Coherent.DCS.RemoteInterface.RemoteInterrogationQueuer" mode="Singleton" />
-		<!-- End of modification -->
-      </service>
-```
-
-After any change to the DCService.exe.config file DCService must be restarted.
-
 # Managing Tariffs
 
 ## Overview
@@ -1086,7 +1063,7 @@ A tariff is used to determine how to calculate the cost associated with a set of
 | Unit cost   | The cost (in pounds and pence) per unit.                                                                                                |
 | Day of week | The days of the week the tariff is valid for. This can be used to have, e.g., different tariffs on the weekends as opposed to weekdays. |
 
-> Note that the end time for a tariff time band is always considered the start of the next time band (in start time order). This means that no 2 tariff time bands can have the same start time. The cost per unit can be in fractions of pence, e.g. if a supplier charges 12.34 p/kWh this can be enterd as 0.1234. Tariff time band names do not need to be unique within a tariff. Repeated time bands will be aggregated when creating the billing data. This allows rates to be split during the day.
+> Note that the end time for a tariff time band is always considered the start of the next time band (in start time order). This means that no 2 tariff time bands can have the same start time. The cost per unit can be in fractions of pence, e.g. if a supplier charges 12.34 p/kWh this can be entered as 0.1234. Tariff time band names do not need to be unique within a tariff. Repeated time bands will be aggregated when creating the billing data. This allows rates to be split during the day.
 
 E.g. if a supplier charge 1p/unit during the night and 2p per unit from 8am to 8pm this could be entered as:
 
@@ -1221,12 +1198,12 @@ All meter registers and virtual meters can have a unit specified. In DCS a unit 
 
 ## User Roles
 
-| Role          | Capabilities                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Usage                                                                                                                            |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Administrator | Adminstrator are permitted to perform all tasks in DCS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Limit the number of Administrators to a small number of trusted, capable users.                                                  |
-| Operators     | An operator can create, edit and delete meters, virtual meters or groups and manage IDCs unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). An operator may view Meter Types but not create, delete or modify them. They may not view the **Admins** page. They may also view and create their own reports and view all public reports.                                                                                                                                                                        | This role is designed for users who will use all aspects of the system be may be restricted to certain groups of meters or IDCs. |
-| Viewer        | The viewer may view virtually all parts of the system but they have stricly read only access. Viewers can not create, edit and delete meters, virtual meters or groups. Viewers can be restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). Viewer may view but not edit Meter Types, IDCs and Administration functions with the exception of the Users table. They may also view and create their own reports and view all public reports.                                                                                      | This role is usually just used for demonstation purposes.                                                                        |
-| Guest         | Guests are essentially only allowed to view Metered Data. They can view any of the groups, meters (meter passwords and remote addresses will be hidden) or virtual meters unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)); however they may not create, modify or delete any of them. They may not interrogate meters or import any data. They can not interact with IDCs, view the event log or access any administrative funtions. They may view and create their own reports and view all public reports. | Use this role if the user needs to be restricted to a subset of meters and should only be authorised to view Metered Data        |
+| Role          | Capabilities                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Usage                                                                                                                            |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Administrator | Administrator are permitted to perform all tasks in DCS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Limit the number of Administrators to a small number of trusted, capable users.                                                  |
+| Operators     | An operator can create, edit and delete meters, virtual meters or groups and manage IDCs unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). An operator may view Meter Types but not create, delete or modify them. They may not view the **Admins** page. They may also view and create their own reports and view all public reports.                                                                                                                                                                         | This role is designed for users who will use all aspects of the system be may be restricted to certain groups of meters or IDCs. |
+| Viewer        | The viewer may view virtually all parts of the system but they have strictly read only access. Viewers can not create, edit and delete meters, virtual meters or groups. Viewers can be restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)). Viewer may view but not edit Meter Types, IDCs and Administration functions with the exception of the Users table. They may also view and create their own reports and view all public reports.                                                                                      | This role is usually just used for demonstration purposes.                                                                       |
+| Guest         | Guests are essentially only allowed to view Metered Data. They can view any of the groups, meters (meter passwords and remote addresses will be hidden) or virtual meters unless they are restricted to certain groups by an administrator (see [User Restricted Groups](#user-restricted-groups)); however they may not create, modify or delete any of them. They may not interrogate meters or import any data. They can not interact with IDCs, view the event log or access any administrative functions. They may view and create their own reports and view all public reports. | Use this role if the user needs to be restricted to a subset of meters and should only be authorised to view Metered Data        |
 
 ## Viewing users
 
@@ -1260,7 +1237,7 @@ All meter registers and virtual meters can have a unit specified. In DCS a unit 
 
 ## Meter Restriction Profiles
 
-A Meter Restiction Profile is a nested list of Denied/Granted Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
+A Meter Restriction Profile is a nested list of Denied/Granted Meter Groups, Meters and/or Virtual Meters. A few examples best illustrates the use of a restriction profiles.
 
 ** Example 1: A set of users is only granted access meters in a given group **
 
@@ -1303,7 +1280,7 @@ A Meter Restriction Profile can be created which has the default access set to *
 
 ## IDC Restriction Profiles
 
-A IDC Restiction Profile is a nested list of Denied/Granted IDC Groups. A few examples best illustrates the use of a restriction profiles.
+An IDC Restiction Profile is a nested list of Denied/Granted IDC Groups. A few examples best illustrates the use of a restriction profiles.
 
 ** Example 1: A set of users is only granted access IDCs in a given group **
 
@@ -1590,7 +1567,7 @@ This following settings can be applied to a meter using this plugin:
 | ---- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | BRI  | The Flag protocol Bearer Rate Indicator | An integer which corresponds to the baud rate for the session: 0 = 300, 1 = 600, 2 = 1200, 3 = 2400, 4 = 4800, 5 = 9600 |
 
-NB: Normally the BRI will be determined automatically based on the value sent from the meter but can be overriden here if required.
+NB: Normally the BRI will be determined automatically based on the value sent from the meter but can be overridden here if required.
 
 When defining a _Meter Type_ which uses this
 plugin, the following needs to be taken into consideration:
@@ -1994,7 +1971,7 @@ The data must be imported from a CSV file. The format is as follows:
 | Column   | Description                                                                                                                                                                                                                                                                                              |
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Date     | The date of the reading (format dd/MM/yyyy).                                                                                                                                                                                                                                                             |
-| Time     | The time of the manual reading period (UTC) (format HH:mm:ss). This column is optional and can be omitted entirely inwhich case the time is set to midnight. If the column is included but the value is blank for a particular row this will also be treated as midnight.                                |
+| Time     | The time of the manual reading period (UTC) (format HH:mm:ss). This column is optional and can be omitted entirely in which case the time is set to midnight. If the column is included but the value is blank for a particular row this will also be treated as midnight.                               |
 | Rx or Mx | The register id (e.g. R10) or meter id (e.g. M200) for which the manual reading applies. If a meter id is provided then the reading will be assumed to belong to the 1st register in the meter. Any number of these columns may be included. The actual value of the column contains the meter readings. |
 
 #### System Link CSV Format
@@ -2150,7 +2127,7 @@ The format of the DCS sheet in the spreadsheet is as follows:
 | UseLocal          | F1       | Specifies whether local time will be used for the metered data, if not GMT will be used. Allowed values: Yes, No. If omitted the value will be No.                                                                                                      |
 | Calibrated        | G1       | Specifies whether the metered data will be calibrated. Allowed values: Yes, No. If omitted the value will be No.                                                                                                                                        |
 | Interpolated      | H1       | Specifies whether the metered data will be interpolated. Allowed values: Yes, No. If omitted the value will be No.                                                                                                                                      |
-| Format            | I1       | The format the metered data will be written in. Allowed values: List, Wide (see below for details). If omitted the value will be List. Note that Wide is only supported when the _IntergrationPeriod_ is HalfHour.                                      |
+| Format            | I1       | The format the metered data will be written in. Allowed values: List, Wide (see below for details). If omitted the value will be List. Note that Wide is only supported when the _IntegrationPeriod_ is HalfHour.                                       |
 | Sheet             | J1       | The Excel sheet where the metered data will be written. If omitted a sheet with the same name as _Source_ will be created.                                                                                                                              |
 | CellRef           | K1       | The cell where the metered data will be written. If omitted for the 1st source in a given sheet A1 will be assumed. If omitted in a subsequent source for a sheet the data will written in the row immediately below the previous data without headers. |
 
@@ -2270,7 +2247,7 @@ An example to compare the daily consumption for a series of register with the da
 | 3   | R201  | 1              | 10              | 0      | 5%              | 20%             |
 | 4   | R2201 | 1              | 10              | 0      | 5%              | 20%             |
 
-An example to compare the average daily consumption for the week for a series of register with the daily average for 4 weeks 24 weeks ago with various threholds. In these cases only certain days of the week and time ranges are of interest.
+An example to compare the average daily consumption for the week for a series of register with the daily average for 4 weeks 24 weeks ago with various thresholds. In these cases only certain days of the week and time ranges are of interest.
 
 |     | A     | B              | C               | D      | E          | F           | G               | H               | I                                                        |
 | --- | ----- | -------------- | --------------- | ------ | ---------- | ----------- | --------------- | --------------- | -------------------------------------------------------- |
