@@ -2262,6 +2262,80 @@ The IDC Status report will list all IDCs that have gone offline during the repor
 If the user subscribes to this report it will only be emailed if an
 IDC goes offline during the reporting period.
 
+## Pulse Input Meter Exception Report
+
+The Pulse Input Meter Exception Report is designed to assist in monitoring pulse input meters.
+The report specifically looks for pulse input meters (which can include Radio Pulse meters) which have not received a pulse for a considerable time which may indicate that
+there is a physical problem that needs to be investigated. For the purposes of this report a meter that hasn't recorded a pulse for more than an specified duration will be considered "offline".
+
+It is suggested that the report is run frequently (e.g. hourly or daily) with the "Only send on alarm condition" option set.
+Each time the report is run it will check when the last non-zero reading period occurred for each meter and check if this is longer than the specified maximum allowed duration.
+
+The input for the report must be specified in a CSV file or Microsoft Office 2007 (or later) Excel file which can be uploaded when editing a report settings. The file must be of type "csv" or "xlsx" and have the following format:
+
+| Column     | Position | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ---------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DcsId      | A1       | The ID of the meter or register in the form Mx/Rx where x is an integer, e.g. to specify the meter with ID 99 this column would contain M99.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| Duration   | B1       | A numerical value representing the maximum allowed time in minutes since the end of a non-zero period.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| DoW Filter | C1       | Optional column. The Day of Week Filter filters out days from each window that don't correspond. The filter format consist of a 7 character string with each position representing a day of the week starting with Monday. To include a day of the week the corresponding position must contain the first character of the day, to exclude a day of the week the corresponding position must contain a character other than the first character of the day. E.g. 'xTWxxxx' would be every Tuesday and Wednesday, '.TWTF..' would be every Tuesday, Wednesday, Thursday and Friday, etc. Special "shorthand strings" Weekdays, Weekends exist. A non-existent or blank DoW Filter means all days of the week. Beware if using '.' as the "don't include character" as Excel may convert 3 dots into an ellipsis which will give a format error when processing the file. |
+| ToD Filter | D1       | Optional column. The Time of Day Filter filters out hours in the day from each window that don't match. The filter format consists of a comma separated list of included time ranges in the format HH:mm-HH:mm. The start of the day is 00:00 and end of the day is 00:00. E.g. '09:00-17:00' means 9am to 5pm, and '00:00-09:00, 17:00-00:00' means all times except 9am to 5pm. Note that resolution is 30 minutes so time ranges like 09:45-10:51 are not supported.                                                                                                                                                                                                                                                                                                                                                                                                 |
+
+Notes:
+
+- The duration value and the filters refer to the day and time the report is actually run.
+- The DcsId can be left blank and that will be considered as a default duration that is applied to all meters which have a Meter Type where the Meter Class is "Pulse Input"
+- If a duration is set to zero this is considered to "disable" any default value for the given meter.
+- More than one row can be entered for a given DcsId allowing different durations to be set for different times of day/day of week.
+
+**How the input file is interpreted**
+
+The report will process all meters which have a Meter Type where the Meter Class is "Pulse Input" and all registers that are explicitly mentioned in the input file.
+
+For each meter/register the input file will look at each row in the report in order to see if the DcsId and filters match. When a row matches the report will use the duration from that row for that meter.
+
+> The input file is scanned in order from the top so the more explicit rules should be at the top and the more general cases at the bottom.
+
+For example:
+
+|     | A     | B        | C          | D                        |
+| --- | ----- | -------- | ---------- | ------------------------ |
+| 1   | DcsId | Duration | DoW Filter | ToD Filter               |
+| 2   | M99   | 120      | Weekdays   | 00:00-09:00, 17:00-00:00 |
+| 3   | M99   | 240      | WeekEnds   |                          |
+| 4   | M99   | 60       |            |                          |
+| 5   | M100  | 0        |            |                          |
+| 6   | R10   | 120      | Weekends   |                          |
+| 7   |       | 500      | MTWTFxx    | 09:00-17:00              |
+| 8   |       | 1000     |            |                          |
+
+In the above case if the report was run at 12:00 on a Monday the duration for meter 99 would be 60 since the first matching row would be 4.
+When processing any other pulse meter the duration 500 would be used since the first matching row would be 7.
+When meter 100 is processed a match would be found in row 5 but since the duration is 0 the meter would be ignored.
+When register 10 is processed the duration 500 would be used since the first matching row would be 7.
+
+Note that the simplest version of a valid report that sets a single maximum duration for all pulse input meters would be:
+
+|     | A     | B        | C          | D          |
+| --- | ----- | -------- | ---------- | ---------- |
+| 1   | DcsId | Duration | DoW Filter | ToD Filter |
+| 2   |       | 1000     |            |            |
+
+It is recommended that a simple input file is used to start with and
+more specific rules are added over time.
+
+**How the duration is calculated**
+
+The duration is calculated **from** the end of the last metering period that contains a non-zero period value **to** the time the report actually runs. If this value is greater than the allowed maximum value the meter is listed in the report.
+
+The meters are divided into 2 categories:
+
+- Pulse Input meters that have gone offline during the reporting period: a meter will be in this category if the end of the last non-zero period plus the calculated duration is AFTER the start of the reporting period. If any meters fall into this category the report is considered to be in the alarm condition.
+
+- Pulse Input meters that went offline previously and are still
+  offline: meters where the duration is greater than above will fall into this category or meters where there are no non-zero readings.
+
+> Be aware that when the report is first run meters may fall into the second category immediately if they have been offline for some time and the report may not be considered to be in the alarm condition. It is recommended that when the report is initially created that it is generated manually and all meters evaluated.
+
 ## Readings Chart Report
 
 The Readings Chart Report will send an email with the readings for all included Groups, Registers and Virtual Meters in chart form.
