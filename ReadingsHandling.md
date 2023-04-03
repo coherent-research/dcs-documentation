@@ -1,6 +1,6 @@
 > Note: Currently ignoring non-polled data RR cases.
 
-> Note: Since to schema changes have been made the CR property Calibrate Previous Period is currently always false and RR closing total is always = RR total and the opening total is always equal to the "Next total" - RR period value.
+> Note: Since no schema changes have been made the CR property Calibrate Previous Period is currently always false and RR closing total is always = RR total and the opening total is always equal to the "Next total" - RR period value.
 
 # Calibration readings
 
