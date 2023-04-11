@@ -1,10 +1,20 @@
-> Note: Currently ignoring non-polled data RR cases.
-
 > Note: Since no schema changes have been made the CR property Calibrate Previous Period is currently always false and RR closing total is always = RR total and the opening total is always equal to the "Next total" - RR period value.
+
+# Types of readings in DCS
+
+Readings in DCS can be broadly be considered to be of 3 types: Polled cumulative, non-polled cumulative and instantaneous.
+
+Polled cumulative readings come from meters where the total of a cumulative quantity (e.g. kWh, litres) is polled every half hour (e.g. from pulse meter, Modbus meter). For these readings the period value of a reading is simply the difference between one polled value and the next.
+
+Non-polled cumulative readings come from meters where profile data of a cumulative quantity (e.g. kWh, litres) is collected from a meter (e.g. and intelligent meter). For these readings the period value is calculated by the meter and it preserved in DCS.
+
+Instantaneous readings can come from meters where the current value of an instantaneous quantity (e.g. Wh, Volts, Amps) is polled every half hour (e.g. Modbus meter) or from meter that store multiple instantaneous values over time (e.g. and intelligent meter).
+
+There are minor variations on how the different types of readings are handled in DCS.
 
 # Calibration readings
 
-Calibration readings are predominantly for use with pulse meters.
+Calibration readings are predominantly for use with pulse meters, and as such, are only really applicable to polled cumulative readings.
 
 When a pulse meter displays a total value and outputs pulses to a pulse counter it is possible for the count displayed on the meter to differ from the count returned to DCS from the pulse counter. This can happen due to communications problems between the meter and the pulse counter, the pulse counter could have its value reset or simply because the meter and pulse counter are installed at different times.
 
@@ -176,14 +186,14 @@ This would have a calculated off set off 1600 which would be applied from 02:30 
 
 # Register resets
 
-Register resets are predominantly for use with intelligent meters and Modbus meters. They are not normally used for pulse meters.
+Register resets are predominantly for use with intelligent meters and Modbus meters. They are only applied to polled or non-polled cumulative readings.
 
 When a meter is changed, or there is a rollover in the actual meter, there may be a discontinuity in the readings in DCS.
 
-Register resets are defined in terms of a closing total and an opening total and the reset is considered to take place at the start of a period.
+Register resets are defined in terms of a closing total and an opening total and the reset is considered to take place at the start of a period. The operator is free to choose any values for the closing and opening totals based on their own estimations, taking into account knowledge of what really happened, e.g., if loads or meters were disconnected etc.
 The main purpose of a Register Reset is to explicitly mark a point in time when a physical meter was changed and to use the opening and closing totals to calculate the period values and when interpolation is required.
 
-## Example 1:a physical meter is (nominally) reset at 1:30 and its value is set to zero
+## Example 1:a physical meter is (nominally) reset at 1:30 and its value is set to zero [polled cumulative readings]
 
 This may look like this in DCS
 
@@ -227,7 +237,7 @@ Notes:
 2. This is the opening total from the RR
 3. This is calculated as the difference the total a 02:00 and the opening reading from the RR
 
-## Example 2: a physical meter is powered down just after 01:00 and a replacement (with registers set to 0) is started just before 3:00. Missing data is interpolated using a Register Reset
+## Example 2: a physical meter is powered down just after 01:00 and a replacement (with registers set to 0) is started just before 3:00. Missing data is interpolated using a Register Reset [polled cumulative readings]
 
 This may look like this in DCS
 
@@ -267,7 +277,92 @@ This would mean that the readings in DCS would look like this
 
 Notes:
 
-1. 1. The period value is shown as 100 since this is the difference between the total at 01:00 and closing total of the Register Reset divided by 4
+1. The period value is shown as 100 since this is the difference between the total at 01:00 and closing total of the Register Reset divided by 4
+
+## Example 3:a physical meter is (nominally) reset at 1:30 and its value is set to zero [non-polled cumulative readings]
+
+This may look like this in DCS
+
+| Time  | Total | Period value |
+| ----- | ----- | ------------ |
+| 00:00 | 100   | 100          |
+| 00:30 | 200   | 100          |
+| 01:00 | 300   | 100 [1]      |
+| 01:30 | 0     | 100          |
+| 02:00 | 100   | 100          |
+| 02:30 | 200   | 100          |
+| 03:00 | 300   | 100          |
+| 03:30 | 400   | 100          |
+
+Notes:
+
+1. The period value is shown as 100 since this is the period value returned from the meter
+
+In this case a register reset would not required if the values are considered to reflect reality, however the user may wish to modify the closing and opening totals to, e.g., allocate consumption to a different period
+
+E.g. in this case a Register reset could be introduced with the following values:
+
+| Timestamp | Closing total | Opening total |
+| --------- | ------------- | ------------- |
+| 01:30     | 450           | 50            |
+
+This would mean that the readings in DCS would look like this:
+
+| Time  | Total | Period value |
+| ----- | ----- | ------------ |
+| 00:00 | 100   | 100          |
+| 00:30 | 200   | 100          |
+| 01:00 | 300   | 150 [1]      |
+| 01:30 | 50    | 50 [2]       |
+| 02:00 | 100   | 100          |
+| 02:30 | 200   | 100          |
+| 03:00 | 300   | 100          |
+| 03:30 | 400   | 100          |
+
+1. The period value is shown as 150 since this is the difference between the total at 01:00 and closing total of the Register Reset.
+2. The period value is shown as 50 since this is the difference between the closing total of the Register Reset and total at 02:00.
+
+## Example 4: a physical meter is powered down just after 01:00 and a replacement (with registers set to 0) is started just before 3:00. Missing data is interpolated using a Register Reset [non-polled cumulative readings]
+
+This may look like this in DCS
+
+| Time  | Total | Period value | Interpolated total value | Interpolated period value |
+| ----- | ----- | ------------ | ------------------------ | ------------------------- |
+| 00:00 | 1100  | 100          | 1100                     | 100                       |
+| 00:30 | 1200  | 100          | 1200                     | 100                       |
+| 01:00 |       |              | _1300_                   | _-320_ [1]                |
+| 01:30 |       |              | _980_                    | _-320_                    |
+| 02:00 |       |              | _660_                    | _-320_                    |
+| 02:30 |       |              | _340_                    | _-320_                    |
+| 03:00 | 20    | 100          | 20                       | 100                       |
+| 03:30 | 120   | 100          | 120                      | 100                       |
+
+Notes:
+
+1. The period value is shown as -320 since this is the difference between the total at 01:00 and 03:00 divided by 4, whereas in reality approximately 100 units were consumed in per period
+
+To handle this case a Register reset could be introduced with the following values:
+
+| Timestamp | Closing total | Opening total |
+| --------- | ------------- | ------------- |
+| 03:00     | 1700          | 20            |
+
+This would mean that the readings in DCS would look like this
+
+| Time  | Total | Period value | Interpolated total value | Interpolated period value |
+| ----- | ----- | ------------ | ------------------------ | ------------------------- |
+| 00:00 | 1100  | 100          | 1100                     | 100                       |
+| 00:30 | 1200  | 100          | 1200                     | 100                       |
+| 01:00 |       |              | _1300_                   | _100_ [1]                 |
+| 01:30 |       |              | _1400_                   | _100_                     |
+| 02:00 |       |              | _1500_                   | _100_                     |
+| 02:30 |       |              | _1600_                   | _100_                     |
+| 03:00 | 20    | 100          | 20                       | 100                       |
+| 03:30 | 120   | 100          | 120                      | 100                       |
+
+Notes:
+
+1. The period value is shown as 100 since this is the difference between the total at 01:00 and closing total of the Register Reset divided by 4
 
 ## Calibration readings and Register resets
 
