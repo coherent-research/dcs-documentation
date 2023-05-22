@@ -2005,7 +2005,7 @@ have the following format:
 | DCSID | The DCS meter id for the included meter. Note that readings from the 1st register of this meter will be taken |
 | Heading | The column heading in the generated report. This can be any text |
 
-> Any other columns in the definition file and will be ignored for the purposes of generating the report. 
+> Any other columns in the definition file will be ignored for the purposes of generating the report. 
 
 An simple example would be:
 
