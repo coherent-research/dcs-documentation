@@ -1991,6 +1991,32 @@ The data must be imported from a CSV file. The format is as follows:
 The Basic Billing Report will send an email with the costs associated with any number of
 Registers and/or Virtual Meters for a day, week or month. The report will show the total cost as well as a break down by Register/Virtual Meter.
 
+## Capacity Market Scheme Report
+This report is designed to generate data that can be submitted as part of the UK Governments
+[Capacity Market Scheme](https://www.gov.uk/government/collections/electricity-market-reform-capacity-market). 
+
+The report will contain the half hour totals for all included meters and, optionally, attach the data as an Excel file. 
+
+A definition file is required to specify the included meters and the headings to be used for each meter in the output. The file can be either a CSV file or an Excel file and have the following columns:
+The input for the Daily Limit Report must be specified in a Microsoft Office 2007 (or later) Excel file which can be uploaded when editing a subscription settings. The file must be of type "xlsx" and
+have the following format:
+
+| Column      | Description                                                                                                     |---|
+| DCSID | The DCS meter id for the included meter. Note that readings from the 1st register of this meter will be taken |
+| Heading | The column heading in the generated report. This can be any text |
+
+> Any other columns in the definition file and will be ignored for the purposes of generating the report. 
+
+An simple example would be:
+
+|     | A    | B          |
+| --- | ---- | ---------- |
+| 1   | DCSID   | Heading |
+| 2   | 1234  | CHP Gross Main Meter        | 
+| 3   | 2003 | CHP Gross Check Meter        |            
+| 4   | 1344 | CHP Parasitic Meter           |                                                                                               
+
+
 ## CSV Readings
 
 The CSV Readings Report will send an email with the readings for all included Groups, Registers and Virtual Meters.
