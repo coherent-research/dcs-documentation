@@ -1,6 +1,8 @@
 # Introduction
+This installation guide is applicable to version 4 of DCS.
+
 From version 3.0 onwards DCS deployment is done by Powershell scripts. 
-The powershell scripts can be downloaded from the Coherent Support Site. 
+The Powershell scripts can be downloaded from the Coherent Support Site. 
 
 In addition a Licence file from DCS will be required to run DCS.
 
@@ -24,31 +26,31 @@ It provides a Web Services interface used by IDCs to connect to DCS via HTTP.
 > If an installation does not plan to use IDCs this component does not need to be installed.
 
 # Prerequisites
-DCS can be installed on any version of Windows Server from Windows Server 2012 R2 onwards. 
+DCS can be installed on any version of Windows Server from Windows Server 2016 R2 onwards. 
 Note that desktop versions of Windows are not supported.
 
 The following features must be installed/enabled with these minimum versions 
 before DCS can be installed;
 
-- .NET framework version 4.7.2 (see https://dotnet.microsoft.com/download)
 - IIS (for DcsWebApp and IdcWebServices)
-- ASP.NET Core/.NET Core Runtime & Hosting Bundle version 2.1 (for DcsWebApp) (see https://dotnet.microsoft.com/download/dotnet-core/2.1)
+- ASP.NET Core Runtime version 6.0.x. (for DcsWebApp) (see https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- .NET 6.0 Desktop Runtime version 6.0.x.  (see https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 - Powershell 5.0 for installation
 
-To ensure the following prerequistes are satisfied use the Check-DcsPrerequisites script (see below).
+To ensure the following prerequisites are satisfied use the Check-DcsPrerequisites script (see below).
 
 > Ensure that IIS is enabled BEFORE installing ASP.NET Core framework or else DCSWebApp will not work.
 
-The DCS DB also requires access to an instance of SQL Server or SQL Server Express version 2012.
+The DCS DB also requires access to an instance of SQL Server or SQL Server Express version 2016 or later.
 
 > Installing the prerequisites is not covered in this document.
 
 # Downloading the DCS Installation Scripts
-> Note that the user acccount used must have administration authority and the Powershell execution policy must be
+> Note that the user account used must have administration authority and the Powershell execution policy must be
 > such that the user can run the Powershell scripts.
 
 - Download the latest version of the DCS Installation Scripts
-which are avaliable at https://www.coherent-research.co.uk/support/download. 
+which are available at https://www.coherent-research.co.uk/support/download. 
 The scripts will only be available to download for users who have logged in to the Coherent Support website.
 
 > Once downloaded ensure that the file isn't blocked because it has come from another computer. 
@@ -73,7 +75,7 @@ Check-DcsSettings
 ```
 
 > Initially the DcsInstallationSettings file has the bare minimal settings required to get
-> DCS installed and running. It is recommended that these miminal settings are 
+> DCS installed and running. It is recommended that these minimal settings are 
 > reviewed and updated to fit the organisation's requirements. 
 > At a mimimum  SMTP settings should be set as there are no default values for these settings.
 
@@ -101,7 +103,7 @@ file should be set to the fully qualified user name (e.g. SERVER1\DcsAccount or 
 
 Whether the Local System Account or a special account is created it will require 
 access to DCS DB and the **Install-DcsDb** script will
-create the approriate user login in SQL server and 
+create the appropriate user login in SQL server and 
 provide it with the required **DcsFullAccess** database role to allow this.
 
 > When a special account is used the scripts will securely prompt for the 
@@ -191,7 +193,7 @@ Install-DcsService -Version X.Y.Z
 > to restart automatically when an error. 
 
 ### Post installation configuration
-- In the directory where DcsService was installed the **DcsService.exe.config** file 
+- In the directory where DcsService was installed the **appsettings.json** file 
 may be edited to fine tune the installation before starting the service.
 - Install licence by copying the **Licence.xml** file to the DcsService directory.
 
@@ -209,12 +211,12 @@ To start DcsService
 Stop-DcsService 
 ```
 
-### Unstalling DcsService
+### Uninstalling DcsService
 This command will uninstall DcsService.
  ```
 Uninstall-DcsService
 ```
-Note that the directory where DcsService was installed and the **DcsService.exe.config** file will not be removed. 
+Note that the directory where DcsService was installed and the **appsettings.json** file will not be removed. 
 These can be manually removed if DCS will not be reinstalled.
 
 ## IdcWebServices
@@ -225,7 +227,7 @@ To install IdcWebServices using the settings defined in the DcsInstallationSetti
 Install-IdcWebServices -Version x.y.z
 ```
 ### Post installation configuration
-In the directory where IdcWebServices was installed the **web.config** file 
+In the directory where IdcWebServices was installed the **appsettings.json** file 
 may be edited to fine tune the installation before starting the site.
 
 ### Starting IdcWebServices
@@ -244,12 +246,12 @@ Stop-IdcWebServices
 This stops IDCs from connecting to the server and performing any actions
 against the database.
 
-### Unstalling IdcWebServices
+### Uninstalling IdcWebServices
 This command will uninstall IdcWebServices.
  ```
 Uninstall-IdcWebServices
 ```
-Note that the directory where IdcWebServices was installed and the **web.config** file will not be removed. 
+Note that the directory where IdcWebServices was installed and the **appsettings.json** file will not be removed. 
 These can be manually removed if DCS will not be reinstalled.
 
 
@@ -269,7 +271,7 @@ have been downloaded as described above.
 > need to be updated.
 
 Before updating DCS back up the database. This can be done using SQL Server Management Studio or
-using the powershell script provided:
+using the Powershell script provided:
 ```
 Backup-DcsDb
 ```
