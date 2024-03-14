@@ -389,6 +389,69 @@ To import readings:
 
 To see the details of the data import plugins see the chapter [Manual Readings Data Import](#data-importexport-plugins-data-import-plugins-manual-readings-data-import).
 
+# Exporting Data
+DCS has the capability of exporting metered data automatically on a daily basis. Any number of export jobs can be defied. Each export job can output data for any number of registers or virtual meters. 
+
+To create an export job:
+
+- Select **Meters** page in the main navigation bar and go to **Meters Home**
+- Open the **Data export** panel.
+- Click the **Add new export job** button at the top right hand of the export jobs table which will display an empty settings form.
+- Add a name for the export job.
+- Select Export Type. 
+- Select a time of day to export the data. The export job exports data from the previous day (midnight to midnight). It is recommended that this is set to a time after all overnight data collection should be completed.
+- Enter a definition file. See the description below for details.
+- Enter the fields according to the description below for the selected export type.
+- Click the **Save** button to confirm the creation of the export job.
+
+## Definition file
+The data export job requires a definition file to define which meters, registers and virtual meters should be exported. The definition file can be a CSV file or an Excel (.xslx) file. 
+The file must start with a header that starts with an ID column that corresponds to the DCS ID.
+The file must have a row for each meter, register or virtual meter to be exported. The ID for each will be in the form Mx, Rx or VMx where x is the DCS ID of the meter, register or virtual meter.
+
+Any other column may exist in the definition file as long as the first column is the ID column and contains the DCS ID. All other columns will be ignored.
+In the example below the Comment column would be ignored by DCS:
+
+|     | A    | B          
+| --- | ---- | ---------- 
+| 1   | ID   | Comment
+| 2   | M10  | Meter 10
+| 3   | R110 | Register 110
+| 4   | VM123| Virtual meter 123
+
+> Note that when a meter ID is included data for all of the meter's registers will be exported. 
+
+## Export Types
+### CSV Data via FTP
+The CSV Data via FTP export type exports metered data as a series of CSV files.
+
+The following settings need to be set for the data export job:
+
+| Field | Description | 
+|---|---|
+| FTP server | The host name of the FTP serer |
+| FTP port | The port number for the FTP server. This is normally 21. |
+| Use SFTP | Select if SFTP should be used. Otherwise plain FTP will be used. |
+| SSH Host Key | If SFTP is selected an SSH Host Key should be entered. |
+| FTP user | The user name on the FTP server |
+| FTP password | The password on the FTP server |
+| CSV output date format | The date format used in the exported CSV file. Normally this will be yyyy-MM-dd. |
+| CSV output header included | Selects if the header will be included in exported CSV files. Normally this is selected. |
+| Number of days. | Data is exported every day at the scheduled time. Normally the previous day's readings are exported. However, it may be desirable to export more than one day's data to cover data collection issues. This field controls the number of days' data that will be exported. |
+| File prefix. | The file name for the exported data will have the format YYYYMMDD.csv where YYYYMMDD corresponds to the date of the data contained in the file. It is possible to prefix this file name if required, e.g., setting this field to DATA_ would result in the csv file name format being DATA_YYYYMMDD.csv |
+
+The data will be exported as one CSV file per day with one row per register or virtual meter. There will be 48 columns containing the period values for each half hour of the day.
+
+An example export file:
+
+```
+ID,Date,00:00,00:30,01:00,01:30, ... ,22:30,23:00,23:30
+R123,2024-01-01,10,10,20,10, ...,5,5,0
+VM100,2024-01-01,100,100,200,100, ...,50,50,10
+```
+
+> Note that if the definition file includes a meter ID all the registers for that meter will be output as separate rows  in the export file with the ID column set to the **Register ID**. 
+
 # Reports
 
 ## Overview
@@ -2001,7 +2064,8 @@ A definition file is required to specify the included meters and the headings to
 The input for the Daily Limit Report must be specified in a Microsoft Office 2007 (or later) Excel file which can be uploaded when editing a subscription settings. The file must be of type "xlsx" and
 have the following format:
 
-| Column      | Description                                                                                                     |---|
+| Column | Description  |
+|---|---|
 | DCSID | The DCS meter id for the included meter. Note that readings from the 1st register of this meter will be taken |
 | Heading | The column heading in the generated report. This can be any text |
 
