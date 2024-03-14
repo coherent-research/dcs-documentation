@@ -452,6 +452,9 @@ VM100,2024-01-01,100,100,200,100, ...,50,50,10
 
 > Note that if the definition file includes a meter ID all the registers for that meter will be output as separate rows  in the export file with the ID column set to the **Register ID**. 
 
+## Export Job Results
+The start and completion of each export job is logged to the DCS event log with a source "Data export job". Therefore, in order to view whether a job succeeded search event log (All events) with the source set to "Data export job" (or just "export").
+
 # Reports
 
 ## Overview
