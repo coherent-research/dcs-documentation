@@ -1768,6 +1768,22 @@ The following register addresses are used:
 | Apparent Energy Import (kVAh) | 1-0:9.8.0 |
 | Apparent Energy Export (kVAh) | 1-0:10.8.0 |
 
+### Landus and Gyr DLMS Electricity Meter (E650/E850)
+This plugin will read the half-hour data from any Landis and Gyr E650 or E850 meter.
+The following register addresses are used:
+
+| Register                   | Address |
+| -------------------------- | ------- |
+| Active Energy Import (kWh) | 1-1:1.4.0 |
+| Active Energy Export (kWh) | 1-1:2.4.0 |
+| Reactive Energy Import (kvarh) | 1-1:3.4.0 |
+| Reactive Energy Export (kvarh) | 1-1:4.4.0 |
+| Reactive Energy QI (kvarh) | 1-1:5.4.0 |
+| Reactive Energy QII (kvarh) | 1-1:6.4.0 |
+| Reactive Energy QIII (kvarh) | 1-1:7.4.0 |
+| Reactive Energy QIV (kvarh) | 1-1:8.4.0 |
+| Apparent Energy Import (kVAh) | 1-1:9.4.0 |
+| Apparent Energy Export (kVAh) | 1-1:10.4.0 |
 
 ### Landis and Gyr T550 Heat Meter
 
