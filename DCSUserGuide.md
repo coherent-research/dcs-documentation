@@ -2412,7 +2412,6 @@ The input for the report must be specified in a CSV file or Microsoft Office 200
 Notes:
 
 - The duration value and the filters refer to the day and time the report is actually run.
-- The DcsId can be left blank and that will be considered as a default duration that is applied to all meters which have a Meter Type where the Meter Class is "Pulse Input"
 - If a duration is set to zero this is considered to "disable" any default value for the given meter.
 - More than one row can be entered for a given DcsId allowing different durations to be set for different times of day/day of week.
 
@@ -2434,23 +2433,10 @@ For example:
 | 4   | M99   | 60       |            |                          |
 | 5   | M100  | 0        |            |                          |
 | 6   | R10   | 120      | Weekends   |                          |
-| 7   |       | 500      | MTWTFxx    | 09:00-17:00              |
-| 8   |       | 1000     |            |                          |
 
 In the above case if the report was run at 12:00 on a Monday the duration for meter 99 would be 60 since the first matching row would be 4.
-When processing any other pulse meter the duration 500 would be used since the first matching row would be 7.
 When meter 100 is processed a match would be found in row 5 but since the duration is 0 the meter would be ignored.
-When register 10 is processed the duration 500 would be used since the first matching row would be 7.
-
-Note that the simplest version of a valid report that sets a single maximum duration for all pulse input meters would be:
-
-|     | A     | B        | C          | D          |
-| --- | ----- | -------- | ---------- | ---------- |
-| 1   | DcsId | Duration | DoW Filter | ToD Filter |
-| 2   |       | 1000     |            |            |
-
-It is recommended that a simple input file is used to start with and
-more specific rules are added over time.
+When register 10 is processed the duration 120 would be used since the first matching row would be 6.
 
 **How the duration is calculated**
 
