@@ -2094,7 +2094,7 @@ The Basic Billing Report will send an email with the costs associated with any n
 Registers and/or Virtual Meters for a day, week or month. The report will show the total cost as well as a break down by Register/Virtual Meter.
 
 ## Capacity Market Scheme Report
-This report is designed to generate data that can be submitted as part of the UK Governments
+This report is designed to generate data that can be submitted as part of the UK Government's
 [Capacity Market Scheme](https://www.gov.uk/government/collections/electricity-market-reform-capacity-market). 
 
 The report will contain the half hour totals for all included meters and, optionally, attach the data as an Excel file. 
@@ -2110,7 +2110,7 @@ have the following format:
 
 > Any other columns in the definition file will be ignored for the purposes of generating the report. 
 
-An simple example would be:
+A simple example would be:
 
 |     | A    | B          |
 | --- | ---- | ---------- |
@@ -2119,6 +2119,8 @@ An simple example would be:
 | 3   | 2003 | CHP Gross Check Meter        |            
 | 4   | 1344 | CHP Parasitic Meter           |                                                                                               
 
+## Capacity Market Scheme Report by Period Value
+This report is the equivalent to the Capacity Market Scheme Report report with the exception that the readings are presented as period values as opposed to total values.
 
 ## CSV Readings
 
