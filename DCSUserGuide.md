@@ -2460,6 +2460,31 @@ If a Group is included all Registers and Virtual Meters in the Group will also b
 
 Note that all Registers in Meters which have Data Collection Disabled set will NOT be included in the report.
 
+## Reading Limits Exception Report
+This report is checks the reading value for the reporting period is within specified limits. The report is mainly intended to be used to 
+check the value of instantaneous registers.
+
+The input for the report must be specified in a CSV file or Microsoft Office 2007 (or later) Excel file which can be uploaded when editing a subscription settings. The file must be of type "csv" or "xlsx" and
+have the following format:
+
+| Column         | Position | Description                                                                                                                         |
+| -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| ID             | A1       | The ID of the register or virtual meter in the form Rx or VMx where x is an integer, e.g. to specify the register with ID 99 this column would contain R99. |
+| LowerLimit     | B1       | An expression for the lower limit in the form '> N' or '>= N' where N is a numeric value, e.g. >= 0 or > 10.5                                        |
+| UpperLimit     | C1       | An expression for the upper limit in the form '< N' or '<= N' where N is a numeric value, e.g. < 100 or <= 10.5        |
+
+One or both LowerLimit and UpperLimit can be specified.
+
+An example would be:
+
+|     | A    | B          | C          |
+| --- | ---- | ---------- | ---------- |
+| 1   | ID   | LowerLimit | UpperLimit |
+| 2   | R10  | >= 100     |  < 200         |
+| 3   | VM110 | > -10      | < 10         |
+
+If the user subscribes to this report it will only be emailed if one or more readings are outside of the specified limits.
+
 ## Total Threshold Report
 
 The Total Threshold Report compares the current total for a register with a specified maximum value.
