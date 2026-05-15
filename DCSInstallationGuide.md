@@ -1,8 +1,7 @@
 # Introduction
 This installation guide is applicable to version 4 of DCS.
 
-From version 3.0 onwards DCS deployment is done by Powershell scripts. 
-The Powershell scripts can be downloaded from the Coherent Support Site. 
+DCS deployment is done by Powershell scripts. The Powershell scripts can be downloaded from the Coherent Support Site. 
 
 In addition a Licence file from DCS will be required to run DCS.
 
@@ -27,17 +26,14 @@ It provides a Web Services interface used by IDCs to connect to DCS via HTTP.
 
 # Prerequisites
 DCS can be installed on any version of Windows Server from Windows Server 2016 R2 onwards. 
-Note that desktop versions of Windows are not supported.
+
+> Note that desktop versions of Windows are not supported.
 
 The following features must be installed/enabled with these minimum versions 
 before DCS can be installed;
 
-- IIS (for DcsWebApp and IdcWebServices)
-- ASP.NET Core Runtime version 6.0.x. (for DcsWebApp) (see https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
-- .NET 6.0 Desktop Runtime version 6.0.x.  (see https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
-- Powershell 5.0 for installation
-
-To ensure the following prerequisites are satisfied use the Check-DcsPrerequisites script (see below).
+- IIS 10.0
+- ASP.NET Core Runtime version 10.0.x (it is recommended that the ASP.NET Core Hosting Bundle is used to install this). https://dotnet.microsoft.com/en-us/download
 
 > Ensure that IIS is enabled BEFORE installing ASP.NET Core framework or else DCSWebApp will not work.
 
@@ -46,12 +42,10 @@ The DCS DB also requires access to an instance of SQL Server or SQL Server Expre
 > Installing the prerequisites is not covered in this document.
 
 # Downloading the DCS Installation Scripts
-> Note that the user account used must have administration authority and the Powershell execution policy must be
-> such that the user can run the Powershell scripts.
+> Note that the user account used must have administration authority and the Powershell execution policy must be such that the user can run the Powershell scripts.
 
 - Download the latest version of the DCS Installation Scripts
 which are available at https://www.coherent-research.co.uk/support/download. 
-The scripts will only be available to download for users who have logged in to the Coherent Support website.
 
 > Once downloaded ensure that the file isn't blocked because it has come from another computer. 
 > If so make sure it is unblocked before proceeding.
@@ -59,33 +53,14 @@ The scripts will only be available to download for users who have logged in to t
 - Create a new directory (e.g. DCS). This directory is used when installing and updating DCS. The actual final location for DCS will be specified during the installation process.
 - Unzip the DCS Installation Scripts into the new directory
 
-# Before installation
-Use Check-DcsPrerequisites to check the the server is ready to install DCS
-This will check that the prerequisites listed in the chapter above are met.
-```
-Check-Prerequisites
-```
-Use Check-DcsSettings to create an installation settings file and display the settings.
-This will show the current settings from the DcsInstallationSettings.psd1 file which is used 
-by all other scripts. Any of the settings in this file can be edited. It is possible to override
-these settings for individual scripts with command line parameters.
-
-```
-Check-DcsSettings
-```
-
-> Initially the DcsInstallationSettings file has the bare minimal settings required to get
-> DCS installed and running. It is recommended that these minimal settings are 
-> reviewed and updated to fit the organisation's requirements. 
-> At a mimimum  SMTP settings should be set as there are no default values for these settings.
 
 # Getting Help
-All installation scripts have a **Help** parameter which will display information 
-about the script and all parameters.
+To get help for all installation scripts use the Powershell Get-Help command.
 
 For example, to get help for the Install-DcsWebApp script:
+
 ```
-Install-DcsWebApp -Help
+Get-Help .\Install-DcsWebApp
 ```
 
 # Windows accounts
@@ -173,7 +148,7 @@ This will display a message to users that try to log on to the DCS website
 that it is currently down for maintenance. This also stops users performing any actions
 against the database.
 
-### Unstalling DcsWebApp
+### Uninstalling DcsWebApp
 This command will uninstall DcsWebApp.
  ```
 Uninstall-DcsWebApp
