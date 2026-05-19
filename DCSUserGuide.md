@@ -2088,6 +2088,9 @@ The data must be imported from a CSV file. The format is as follows:
 
 # Report Types
 
+## Assets Report
+This report provides a summary of the meters and IDC defined in the system and an Excel spreadsheet with full details for the meters and IDCs.
+
 ## Basic Billing Report
 
 The Basic Billing Report will send an email with the costs associated with any number of
