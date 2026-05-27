@@ -448,7 +448,8 @@ The filename template defines what filename will be used when exporting data.
 The template may contain literal text and the tokens: 
 
 ```
-{DATE[:format]} will included the date of the exported data format according to _format_ which can contain YYYY, YY, MM, and DD. If the format is ommitted the default format will be YYYYMMDD.
+{DATE[:format]} will included the date of the exported data formated according to _format_ 
+which can contain YYYY, YY, MM, and DD. If the format is ommitted the default format will be YYYYMMDD.
 
 {NAME} will included a sanitised version of the register or virtual meter's name.  
 ```
