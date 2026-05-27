@@ -435,12 +435,39 @@ The following settings need to be set for the data export job:
 | SSH Host Key | If SFTP is selected an SSH Host Key should be entered. |
 | FTP user | The user name on the FTP server |
 | FTP password | The password on the FTP server |
+| FTP directory | The directory on the FTP server where the data will be stored |
 | CSV output date format | The date format used in the exported CSV file. Normally this will be yyyy-MM-dd. |
 | CSV output header included | Selects if the header will be included in exported CSV files. Normally this is selected. |
+| Filename template. | A template to define the filename for the exported data. See below. |
+ | One item per file | If selected the data will be exported with one file per register/virtual meter per day. If not selected the data will be exported one file per day. |
 | Number of days. | Data is exported every day at the scheduled time. Normally the previous day's readings are exported. However, it may be desirable to export more than one day's data to cover data collection issues. This field controls the number of days' data that will be exported. |
-| File prefix. | The file name for the exported data will have the format YYYYMMDD.csv where YYYYMMDD corresponds to the date of the data contained in the file. It is possible to prefix this file name if required, e.g., setting this field to DATA_ would result in the csv file name format being DATA_YYYYMMDD.csv |
 
-The data will be exported as one CSV file per day with one row per register or virtual meter. There will be 48 columns containing the period values for each half hour of the day.
+> Note that if the definition file includes a meter ID all the registers for that meter will be output as separate rows  in the export file with the ID column set to the **Register ID**. 
+
+***Filename template***
+
+The filename template defines what filename will be used when exporting data. 
+The template may contain literal text and the tokens: 
+
+```
+{Date[:format]} will included the date of the exported data format according to _format_ which can contain YYYY, YY, MM, and DD.
+
+{NAME} will included a sanitised version of the register or virtual meter's name.  
+```
+
+Examples: 
+```
+DATA_{Date:YYYYMMDD}_SUFFIX with date 2026-01-02 → DATA_20260102_SUFFIX.csv
+{Date:YYYY_MM_DD}_{NAME} with date 2026-01-02 and name Meter 1: Register 1 → 2026_01_02_Meter_1_Register_1.csv.
+```
+
+***Formats***
+
+The following formats are currently available:
+
+_Systems Link Format:_
+
+The data will be formatted with 48 columns containing the period values for each half hour of the day.
 
 An example export file:
 
@@ -450,10 +477,28 @@ R123,2024-01-01,10,10,20,10, ...,5,5,0
 VM100,2024-01-01,100,100,200,100, ...,50,50,10
 ```
 
-> Note that if the definition file includes a meter ID all the registers for that meter will be output as separate rows  in the export file with the ID column set to the **Register ID**. 
+_SSE Format_
+The data will be formatted with 48 columns containing the period values for each half hour of the day. It will also include a midnight total in the MeterReading column.
 
-## Export Job Results
-The start and completion of each export job is logged to the DCS event log with a source "Data export job". Therefore, in order to view whether a job succeeded search event log (All events) with the source set to "Data export job" (or just "export").
+```
+Date,Meter,Utility,Channel,MeterReading,00:30,01:00,01:30, ... ,22:30,23:00,23:30,00:00
+2026-05-25,16082878,Electricity,kWh,238947.558,2.658,2.005,2.699, ... ,6.105,6.951,5.578
+```
+
+_GMCA Format:_
+
+The data will be formatted with one row per reading and the register's meter name will be included as the Identifier.
+
+> This format is intended to be used with the "One Item Per File" option. Since the meter name is used as the identifier it is also intended that only one register for each meter is exported.
+
+An example export file:
+
+```
+Identifier,Timestamp,Value,Unit
+Meter1000,24/05/2026 00:30:00,5.3935,kWh
+Meter2000,24/05/2026 01:00:00,5.586,kWh
+Meter3000,24/05/2026 01:30:00,5.494,kWh
+```
 
 # Reports
 
