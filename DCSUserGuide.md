@@ -442,15 +442,13 @@ The following settings need to be set for the data export job:
  | One item per file | If selected the data will be exported with one file per register/virtual meter per day. If not selected the data will be exported one file per day. |
 | Number of days. | Data is exported every day at the scheduled time. Normally the previous day's readings are exported. However, it may be desirable to export more than one day's data to cover data collection issues. This field controls the number of days' data that will be exported. |
 
-> Note that if the definition file includes a meter ID all the registers for that meter will be output as separate rows  in the export file with the ID column set to the **Register ID**. 
-
 ***Filename template***
 
 The filename template defines what filename will be used when exporting data. 
 The template may contain literal text and the tokens: 
 
 ```
-{Date[:format]} will included the date of the exported data format according to _format_ which can contain YYYY, YY, MM, and DD.
+{DATE[:format]} will included the date of the exported data format according to _format_ which can contain YYYY, YY, MM, and DD. If the format is ommitted the default format will be YYYYMMDD.
 
 {NAME} will included a sanitised version of the register or virtual meter's name.  
 ```
@@ -458,7 +456,7 @@ The template may contain literal text and the tokens:
 Examples: 
 ```
 DATA_{Date:YYYYMMDD}_SUFFIX with date 2026-01-02 → DATA_20260102_SUFFIX.csv
-{Date:YYYY_MM_DD}_{NAME} with date 2026-01-02 and name Meter 1: Register 1 → 2026_01_02_Meter_1_Register_1.csv.
+{DATE:YYYY_MM_DD}_{NAME} with date 2026-01-02 and name Meter 1: Register 1 → 2026_01_02_Meter_1_Register_1.csv.
 ```
 
 ***Formats***
@@ -476,6 +474,8 @@ ID,Date,00:00,00:30,01:00,01:30, ... ,22:30,23:00,23:30
 R123,2024-01-01,10,10,20,10, ...,5,5,0
 VM100,2024-01-01,100,100,200,100, ...,50,50,10
 ```
+
+> Note that if the definition file includes a meter ID all the registers for that meter will be output as separate rows  in the export file with the ID column set to the **Register ID**. 
 
 _SSE Format_
 The data will be formatted with 48 columns containing the period values for each half hour of the day. It will also include a midnight total in the MeterReading column.
