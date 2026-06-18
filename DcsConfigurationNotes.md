@@ -1,5 +1,13 @@
 # DCS configuration notes
 
+## Advance Warning on Sign In Page
+In order to add a warning to the sign in page add the following setting in the DCS Web App appSettings.json file under the `DcsSettings`:
+
+Settings | Use | Default value
+---------|-----|--------------
+AdvancedWarning | Display message on sign-in page | Empty
+
+
 ## Password Criteria
 The following settings in the DCS Web App appSettings.json file under the `DcsSettings` key can be used to configure password requirements:
 
@@ -38,7 +46,7 @@ SSO settings for user changed by administrator - SSO enabled/enforced| SsoSettin
 Variable | Description
 ---------|------------
 %USERNAME% | The DCS account user name
-%PASSWORD% | The DCS account password. When this is sent out it will always be a new randomaly generated password.
+%PASSWORD% | The DCS account password. When this is sent out it will always be a new randomly generated password.
 %SIGNINURL% | Main URL page for DCS. This corresponds to the DcsWebAppUrl settings in the Dcs Web App appSettings.json file. 
 %ROLE% | The DCS account role, i.e. Administrator, Guest, Operator or Viewer.
 %EMAIL% | The user email associated with the DCS account
@@ -58,7 +66,7 @@ A sample template:
 ## Single Sign On configuration
 
 By default, SSO is completely disabled in DCS. 
-The following settings in the DCS Web App appSettings.json file under the `DcsSettings` key are use to configure SSO support:
+The following settings in the DCS Web App appSettings.json file under the `DcsSettings` key are used to configure SSO support:
 
 Settings | Use | Default value 
 ---------|-----|--------------
